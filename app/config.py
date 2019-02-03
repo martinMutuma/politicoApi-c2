@@ -17,9 +17,10 @@ class DevelopmentConfig(Config):
 class TestConfig(Config):
     FLASK_DEBUG = 1
     DEBUG = True
+    TESTING = True
   
 configs = dict(
-    test = TestConfig,
+    testing = TestConfig,
     production=Config,
     development=DevelopmentConfig
 )
