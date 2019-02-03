@@ -5,3 +5,4 @@ __pycache__
 .coveralls.yml
 .coveralls.yml
 .vscode/
+codet.py
