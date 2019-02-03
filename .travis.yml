@@ -1,0 +1,25 @@
+language: python
+python:
+  - "3.6"
+  - "3.6-dev"  # 3.6 development branch
+  - "3.7-dev" 
+
+# command to install dependencies
+install:
+  - pip install -r requirements.txt
+
+# command to run tests
+script:
+  - pytest
+
+#
+services:
+  - postgresql
+
+before_script:
+  - export TRAVIS_CI_RUN=True
+  - flask db init
+  - flask db migrate
+  - flask db upgrade
+
+
