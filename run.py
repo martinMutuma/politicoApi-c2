@@ -1,3 +1,5 @@
+"""run.py the main file to run the app"""
+
 from app import polApp
 from app.config import configs
 
