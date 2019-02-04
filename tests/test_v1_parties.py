@@ -55,14 +55,15 @@ class TestParties(BaseTest):
 
         def test_get_specifi_party_details(self):
                 """tests for endpoint /api/v1/parties/<partyId>"""
-                # result1 =self.client().post('/api/v1/parties', data=self.party1 )
-                # result12 =self.client().post('/api/v1/parties', data=self.party1b )
-                # dataCheck = json.loads(result1.data)
-                # dataCheck2 = json.loads(result12.data)
+                result1 =self.client().post('/api/v1/parties', data=self.party1 )
+                result12 =self.client().post('/api/v1/parties', data=self.party1b )
+                dataCheck = json.loads(result1.data)
+                dataCheck2 = json.loads(result12.data)
 
-                resultGet1 = self.client().get("/api/v1/parties/1")
-
+                resultGet1 = self.client().get("/api/v1/parties/{}".format(dataCheck['data']['id']))
+                resultGet2 = self.client().get("/api/v1/parties/{}".format(dataCheck2['data']['id']))
                 self.assertEqual(resultGet1.status_code, 200)
+                self.assertEqual(resultGet2.status_code, 200)
 
                 dataCheckGet = json.loads(resultGet1.data)
                 self.assertTrue('status' in dataCheckGet)

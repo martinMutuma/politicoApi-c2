@@ -1,25 +1,12 @@
-[report]
-omit = */python?.?/*
-    */tests/*
-    /venv/*
-    /asyncio/*        
-    /concurrent/
-    /contextvars.py                    
-    /ctypes\wintypes.py     
-    /decimal.py                          
-    /html\__init__.py                    
-    /html\entities.py                    
-    /http\cookiejar.py                
-    /mimetypes.py                      
-    /numbers.py                        
-    /stringprep.py                     
-    /uuid.py                            
-    /encodings/
-    /hmac.py                            
-    /click/
-    /colorama/    
-    /flask/ 
-    /itsdangerous/
-    /jinja2/
-    /markupsafe/
-    /werkzeug/
+[run]
+omit = 
+         venv/*
+        tests/*
+        *__init__*
+        
+[report]    
+omit =  
+        venv/*
+        tests/*
+        *__init__*
+    
