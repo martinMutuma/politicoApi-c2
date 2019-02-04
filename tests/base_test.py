@@ -1,5 +1,5 @@
 from app import polApp
-from app.config import configs
+from instance.config import configs
 import unittest
 import json
 

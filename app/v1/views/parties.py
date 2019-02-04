@@ -37,8 +37,24 @@ def post_party():
     return make_response(res, 201)
     
        
+@polApp.route('/api/v1/parties/<partyId>', methods=['GET'])  
+def get_party_details(partyId):
+    """Get the details of a specific party"""
+    create_partylist()
 
-
+    if len(partiesList) < 1:
+        pass #imprement for empty list
+    if partyId in partiesList:
+        returnPartydetails ={
+            'name':partiesList[partyId]['name'], 
+            'id':partiesList[partyId]['id'],
+            'logoUrl':partiesList[partyId]['logoUrl']
+            }
+        res = jsonify({"status":200, 'data':returnPartydetails})
+        return make_response(res, 200)
+    else:
+        res = jsonify({"status":404, 'error':"Party with id {} not found".format(partyId)})
+        return make_response(res, 404)
 
 
     
@@ -52,9 +68,19 @@ def create_party(name, hqAddress,logoUrl):
     return newParty
 
 def get_data():
+    '''Getting data from json or form submitted data '''
     if request.is_json:
         data = request.get_json()
     else:
         data = request.form
 
     return data
+
+def create_partylist():
+     party1 =  {
+                'name' : 'Party A',
+                'hqAddress' : '22 jumpstreet',
+                'logoUrl' : 'www.url.com/party.png',
+                }
+     partiesList[1]=party1
+     return partiesList
