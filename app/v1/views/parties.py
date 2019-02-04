@@ -41,8 +41,8 @@ def post_party():
 def get_party_details(partyId):
     """Get the details of a specific party"""
     create_partylist()
-
-    if len(partiesList) < 1:
+   
+    if len(partiesList) == 0:
         pass #imprement for empty list
     if partyId in partiesList:
         returnPartydetails ={
@@ -78,9 +78,10 @@ def get_data():
 
 def create_partylist():
      party1 =  {
+                'id':'1',
                 'name' : 'Party A',
                 'hqAddress' : '22 jumpstreet',
                 'logoUrl' : 'www.url.com/party.png',
                 }
-     partiesList[1]=party1
+     partiesList['1']=party1
      return partiesList

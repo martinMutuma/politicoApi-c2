@@ -1,5 +1,5 @@
 from flask import Flask
-from app.config import configs
+from instance.config import configs
 
 
 polApp = Flask(__name__)
