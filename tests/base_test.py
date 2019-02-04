@@ -10,12 +10,6 @@ class BaseTest(unittest.TestCase):
         polApp.config.from_object(configs['testing'])
         self.client = polApp.test_client
 
-        self.party =  {
-            'id' : 1,
-            'name' : 'Party A',
-            'hqAddress' : '22 jumpstreet',
-            'logoUrl' : 'www.url.com/party.png',
-            }
         
 
 
