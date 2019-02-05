@@ -21,4 +21,5 @@ class BaseTest(unittest.TestCase):
         self.assertEqual(dataCheck['status'], 200)
         
 
-
+    def tearDown(self):
+        pass
