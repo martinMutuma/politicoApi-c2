@@ -81,9 +81,14 @@ def get_all_parties():
     return make_response(res, 200)
 
 
-def create_party(name, hqAddress, logoUrl):
+def create_party(name, hqAddress, logoUrl, partyid=0):
     """Central place to create party for uniformity"""
-    partyid = len(partiesList)+1
+    if partyid == 0:
+        partyid = len(partiesList)+1
+
+    if partyid in partiesList:
+        return create_party(name, hqAddress, logoUrl, partyid+1)
+
     partiesList[partyid]  = dict(id=partyid, name=name,
                     hqAddress=hqAddress, logoUrl=logoUrl)
     return partiesList[partyid] 
@@ -121,6 +126,23 @@ def update_party_details(partyId):
         {"status": 404, 'error': "Party with id {} not found".format(partyId)})
     return make_response(res, 404)
 
+
+def delete_party(partyId):
+    """Delete Party from list of Parties"""
+    if partyId in partiesList:
+        deleted_party = partiesList[partyId]
+        del partiesList[partyId]
+        res = {
+            'status':200, 
+            'data':{'message':"Party {} deleted".format(deleted_party['name'])}
+            }
+        return make_response(jsonify(res), 200)
+
+    res = jsonify(
+        {"status": 404, 'error': "Party with id {} not found".format(partyId)})
+    return make_response(res, 404)
+
+
 def get_data():
     '''Getting data from json or form submitted data '''
   
@@ -136,6 +158,7 @@ def get_data():
             data = dict() 
 
     return data
+
 
 def check_name_exists(name):
     """Checks if party Name exists in the parties list"""
