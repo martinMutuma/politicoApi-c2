@@ -17,6 +17,16 @@ class TestParties(BaseTest):
         'hqAddress': '23 jumpstreet',
         'logoUrl': 'www.url.com/party.png',
     }
+    party1c = {
+        'name': 'Party c',
+        'hqAddress': '23 jumpstreet',
+        'logoUrl': 'www.url.com/party.png',
+    }
+    party1d = {
+        'name': 'Party D',
+        'hqAddress': '23 jumpstreet',
+        'logoUrl': 'www.url.com/party.png',
+    }
     party2 = {
         'name': 'Par',
         'hqAddress': '21 jumpstreet',
@@ -28,9 +38,10 @@ class TestParties(BaseTest):
     }
 
     def setUp(self):
+        
         polApp.config.from_object(configs['testing'])
         self.client = polApp.test_client
-        self.result1 = self.client().post('/api/v1/parties', data=self.party1)
+        self.result1 = self.client().post('/api/v1/parties', data=self.party1b)
 
 
     def test_create_party(self):
@@ -64,7 +75,7 @@ class TestParties(BaseTest):
 
     def test_get_specifi_party_details(self):
         """tests for endpoint /api/v1/parties/<partyId>"""
-        result12 = self.client().post('/api/v1/parties', data=self.party1b)
+        result12 = self.client().post('/api/v1/parties', data=self.party1c)
         dataCheck = json.loads(result12.data)
         resultGet1 = self.client().get(
             "/api/v1/parties/{}".format(dataCheck['data']['id']))
@@ -85,8 +96,11 @@ class TestParties(BaseTest):
 
     def test_update_party_name(self):
         """Tests for Patch Data /api/v1/parties/<int:partyid>/name"""
+        result12 = self.client().post('/api/v1/parties', data=self.party1d)
+        dataCheck = json.loads(result12.data)
         patch_data = {'name': 'Change Party Name'}
-        result = self.client().patch('/api/v1/parties/1/name', data=patch_data)
+        result = self.client().patch('/api/v1/parties/{}/name'.format(dataCheck['data']['id']), 
+                                        data=patch_data)
 
         self.assertEqual(result.status_code, 202)
 
@@ -96,8 +110,8 @@ class TestParties(BaseTest):
 
     def test_delete_party(self):
         """Tests for [DELETE] /api/v1/parties/<int:partyId>to delete party"""
-        dataCheckp = json.loads(self.result1.data)
-        result = self.client().delete('/api/v1/parties/{}'.format(dataCheckp['data']['id']))
+    
+        result = self.client().delete('/api/v1/parties/1')
         datacheck = json.loads(result.data)
         self.check_standard_reply(datacheck, 200)
         self.assertTrue('message' in datacheck['data'])
