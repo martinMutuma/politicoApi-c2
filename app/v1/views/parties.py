@@ -1,6 +1,6 @@
 """app/v1/views/parties.py """
 import copy
-from app.v1 import v1_app
+# from app.v1 import v1_app
 from flask import request, make_response, jsonify
 from app.v1.views.validate import Validate
 partiesList = {}
@@ -38,10 +38,10 @@ def post_party():
     
     party_name_exists = check_name_exists(data['name'])
     if party_name_exists:
-        pass
-        # res = jsonify({'status': 400, 'error': "Duplicate name error, Party {} already exists with id {}".format(
-        #     data['name'], party_name_exists), 'data': []})
-        # return make_response(res, 400)
+        # pass
+        res = jsonify({'status': 400, 'error': "Duplicate name error, Party {} already exists with id {}".format(
+            data['name'], party_name_exists), 'data': []})
+        return make_response(res, 400)
 
     party = create_party(data['name'], data['hqAddress'], data['logoUrl'])
   
