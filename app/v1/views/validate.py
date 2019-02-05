@@ -46,7 +46,7 @@ class Validate:
     @classmethod
     def validate_url(cls, Url):
         try:
-            result = urlparse(url)
+            result = urlparse(Url)
             if all([result.scheme, result.netloc,result.path]):
                 return cls.make_retun_dict(True)
             else:

@@ -1,5 +1,8 @@
 ## Political APi 
 [![Build Status](https://travis-ci.org/martinMutuma/politicoApi-c2.svg?branch=develop)](https://travis-ci.org/martinMutuma/politicoApi-c2)
+[![Coverage Status](https://coveralls.io/repos/github/martinMutuma/politicoApi-c2/badge.svg)](https://coveralls.io/github/martinMutuma/politicoApi-c2)
+[![Maintainability](https://api.codeclimate.com/v1/badges/b9d93f75e153d157012e/maintainability)](https://codeclimate.com/github/martinMutuma/politicoApi-c2/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/b9d93f75e153d157012e/test_coverage)](https://codeclimate.com/github/martinMutuma/politicoApi-c2/test_coverage)
 ## Requirements 
 Imprements the following endpoints using datastratures 
 **API Endpoint Specification**

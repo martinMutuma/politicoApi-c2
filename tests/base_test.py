@@ -20,6 +20,12 @@ class BaseTest(unittest.TestCase):
         self.assertTrue('status' in dataCheck)
         self.assertEqual(dataCheck['status'], 200)
         
+    def check_standard_reply(self, datacheck, status, error=False):
+        self.assertTrue('status' in datacheck)
+        if not error:
+            self.assertTrue('data' in datacheck)
+        else:
+            self.assertTrue('error' in datacheck)
 
     def tearDown(self):
-        pass
+        self.client = None
