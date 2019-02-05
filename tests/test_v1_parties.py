@@ -76,8 +76,8 @@ class TestParties(BaseTest):
         self.assertEqual(resultGet2.status_code, 200)
 
         dataCheckGet = json.loads(resultGet1.data)
-        self.assertTrue('status' in dataCheckGet)
-        self.assertTrue('data' in dataCheckGet)
+        self.check_standard_reply(dataCheckGet, 200)
+        
 
         self.assertEqual(dataCheckGet['data']['name'], self.party1['name'])
 
@@ -87,6 +87,26 @@ class TestParties(BaseTest):
         self.assertEqual(resultGet.status_code, 200)
 
         dataCheckGet = json.loads(resultGet.data)
-        self.assertTrue('status' in dataCheckGet)
-        self.assertTrue('data' in dataCheckGet)
-        self.assertEqual(dataCheckGet['status'], 200)
+        self.check_standard_reply(dataCheckGet, 200)
+      
+
+    def test_update_party_name(self):
+        """Tests for Patch Data /api/v1/parties/<int:partyid>/name"""
+        patch_data = {'name':'Change Party Name'}
+        result = self.client().patch('/api/v1/parties/1/name', data=patch_data)
+        self.assertEqual(result.status_code, 202)
+
+        datacheck = json.loads(result.data)
+        print(datacheck)
+        self.check_standard_reply(datacheck, 202)
+        self.assertEqual(datacheck['data']['name'],patch_data['name'] )
+
+    def check_standard_reply(self, datacheck, status, error=False):
+        self.assertTrue('status' in datacheck)
+        if not error:
+             self.assertTrue('data' in datacheck)
+        else:
+             self.assertTrue('error' in datacheck)
+
+        self.assertEqual(datacheck['status'], status)
+        

@@ -24,7 +24,7 @@ def post_party():
         res = jsonify(
             {'status': 400, 'error': validateName['message'], 'data': []})
         return make_response(res, 400)
-
+    
     validateAddressLen = Validate.validate_length(data['hqAddress'], 5)
     if validateAddressLen['status'] == False:
         res = jsonify({'status': 400, 'error': "hqAddress " +
@@ -35,12 +35,16 @@ def post_party():
     # if validateLogoUrl['status'] == False:
     #         res = jsonify({'status':400, 'error':"logoUrl "+validateLogoUrl['message'], 'data':[]})
     #         return make_response(res, 400)
+    
+    party_name_exists = check_name_exists(data['name'])
+    if party_name_exists:
+        pass
+        # res = jsonify({'status': 400, 'error': "Duplicate name error, Party {} already exists with id {}".format(
+        #     data['name'], party_name_exists), 'data': []})
+        # return make_response(res, 400)
 
     party = create_party(data['name'], data['hqAddress'], data['logoUrl'])
-    if isinstance(party, int):
-        res = jsonify({'status': 400, 'error': "Duplicate name error, Party {} already exists with id {}".format(
-            data['name'], party), 'data': []})
-        return make_response(res, 400)
+  
 
     returnPartydetails = {'name': party['name'], 'id': party['id']}
     res = jsonify({"status": 201, 'data': returnPartydetails})
@@ -73,30 +77,69 @@ def get_all_parties():
         for i in sub_list:
             del sub_list[i]['hqAddress']
     return_parties = [sub_list[i] for i in sub_list]
-    res = jsonify({"status": 200, 'data': return_parties, 'pa': partiesList})
+    res = jsonify({"status": 200, 'data': return_parties})
     return make_response(res, 200)
 
 
 def create_party(name, hqAddress, logoUrl):
     """Central place to create party for uniformity"""
-    # validation
-
     partyid = len(partiesList)+1
-    newParty = dict(id=partyid, name=name,
+    partiesList[partyid]  = dict(id=partyid, name=name,
                     hqAddress=hqAddress, logoUrl=logoUrl)
-    for i in partiesList:
-        if name in partiesList[i].values():
-            pass
-            # return i #uncomment
-    partiesList[partyid] = newParty
-    return newParty
+    return partiesList[partyid] 
 
+
+def update_party_details(partyId):
+    patch_data = get_data()
+
+    validateRequired = Validate.required(
+        fields=['name'], dataDict=patch_data)
+
+    if validateRequired['status'] == False:
+        res = jsonify(
+            {'status': 400, 'error': validateRequired['message'], 'data': []})
+        return make_response(res, 400)
+     
+    party_name_exists = check_name_exists(patch_data['name'])
+    if party_name_exists:
+        res = jsonify({'status': 400, 'error': "Duplicate name error, Party {} already exists with id {}".format(
+            patch_data['name'], party_name_exists), 'data': []})
+        return make_response(res, 400)
+        
+    if partyId in partiesList:
+        partiesList[partyId]['name'] = patch_data['name']
+
+        if 'hqAddress' in patch_data:
+            partiesList[partyId]['hqAddress'] = patch_data['hqAddress']
+        if 'logoUrl' in patch_data:
+            partiesList[partyId]['logoUrl'] = patch_data['logoUrl']
+
+        res = {"status":202, "data":{"id":partiesList[partyId]['id'],'name':partiesList[partyId]['name']}}
+        return make_response(jsonify(res), 202) #Accepted
+   
+    res = jsonify(
+        {"status": 404, 'error': "Party with id {} not found".format(partyId)})
+    return make_response(res, 404)
 
 def get_data():
     '''Getting data from json or form submitted data '''
+  
     if request.is_json:
-        data = request.get_json(force=True)
+        data = request.get_json()
     else:
         data = request.form
 
+    if not data:
+        try:
+            data = request.get_json(force=True)  
+        except:
+            data = dict() 
+
     return data
+
+def check_name_exists(name):
+    """Checks if party Name exists in the parties list"""
+    for i in partiesList:
+        if name in partiesList[i].values():
+            return i
+    return False
