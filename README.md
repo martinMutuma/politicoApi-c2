@@ -1,148 +1,98 @@
-## Political APi 
+## Political 
 [![Build Status](https://travis-ci.org/martinMutuma/politicoApi-c2.svg?branch=develop)](https://travis-ci.org/martinMutuma/politicoApi-c2)
 [![Coverage Status](https://coveralls.io/repos/github/martinMutuma/politicoApi-c2/badge.svg)](https://coveralls.io/github/martinMutuma/politicoApi-c2)
 [![Maintainability](https://api.codeclimate.com/v1/badges/b9d93f75e153d157012e/maintainability)](https://codeclimate.com/github/martinMutuma/politicoApi-c2/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/b9d93f75e153d157012e/test_coverage)](https://codeclimate.com/github/martinMutuma/politicoApi-c2/test_coverage)
-## Requirements 
-Imprements the following endpoints using datastratures 
-**API Endpoint Specification**
 
-1. Endpoint: POST /parties
+## Description
+Political is a platform for use by both  politicians and citizens.Political enables citizens give their mandate to politicians running for different government offices
+while building trust in the process through transparency.
 
-        Create a political party 
+Political is impremented  using python data structures
 
-        Response spec:
-        ```
-        {
-        “status” : Integer,
-        “data” : [{
-                “id”: Integer, // id of newly created party
-                “name”: String,
-                }]
-        } 
-        ```
-2. Endpoint: GET /parties/<party-id>
+## Setup and installation
+1. Clone the repo
+   ```git
+        git clone https://github.com/martinMutuma/politicoApi-c2.git
 
-        Fetch a specific political party record.
+        cd politicoApi-c2
+   ```
 
-        Response spec:
-        ```
-        {
-        “status” : Integer,
-        “data” : [{
-                “id” : Integer, // political party unique id
-                “name” : String,
-                “logoUrl”: String,
-            }]
-        }
-        ```
+2. Set up virtualenv
 
-3. Endpoint: GET /parties/
+        
+   ```bash
+        #linux
+        virtualenv venv
+   ```
+    
+   ```bash
+        #windows
+        python -m virtualenv venv
+   `````
 
-    Fetch all political parties records.
+3. Activate virtualenv
 
-        Response spec:
-        ```json
-        {
-        “status” : Integer,
-        “data” : [
-                {
-                “id” : Integer, // political party unique id
-                “name” : String,
-                “logoUrl”: String,
-                } , {
-                “id” : Integer, // political party unique id
-                “name” : String,
-                “logoUrl”: String,
-                } , {
-                “id” : Integer, // political party unique id
-                “name” : String,
-                “logoUrl”: String,
-                } , {
-                “id” : Integer, // political party unique id
-                “name” : String,
-                “logoUrl”: String,
-                }
-                ]
-            }
-            ```
-4.  Endpoint: PATCH /parties/<party-id>/name
-        Edit the name of a specific political party.
+        
+   ```bash
+        #linux
+        source venv/bin/activate
+   ```
+  
+   ```bash
+        #windows
+        venv/Scripts/activate
+   ```
+4. Install dependencies
 
-        Response spec:
-        ```
-        {
-        “status” : Integer,
-        “data” : [{
-                “id”: Integer, // political party unique id
-                “name” : String, // the new name of the political party
-                }]
-        }
-        ```
-5. Endpoint: DELETE /parties/<party-id>
-    Delete a specific political party.
+   ```bash
+        #Universal windows and linux
+        pip install -r requirements.txt
+   ```
 
-        Response spec:
-        ```
-        {
-        “status” : Integer,
-        “data” : [{
-            “message”: String
-            }]
-        }
-        ```
-6. Endpoint: POST /offices
-        Create a political office.
+5. Setup env variables
+   ```bash  
+        #linux
+        - export FLASK_APP=run.py
+        - export FLASK_DEBUG=1
+        - export FLASK_ENV=development
+   ```
+   ```bash  
+        #windows
+        - set FLASK_APP=run.py
+        - set FLASK_DEBUG=1
+        - set FLASK_ENV=development
+   ```
+6. Manually Running tests
+      ```
+         python -m pytest --cov=app/api
+      ```
+7. Start the server
+      ```
+         flask run
+      ```
 
-        Response spec:
-        ```
-        {
-        “status” : Integer,
-        “data” : [{
-            “id” : Integer, // id of newly created office
-            “type” : String, // type of office
-            “name” : String, // name of office
-            }]
-        }
-        ```
-7. Endpoint: GET /offices
+app is available at [http://127.0.0.1:5000/](http://127.0.0.1:5000/)
 
-        Fetch all political offices records
+##Political Endpoints
 
-        Response spec:
-        ```
-        {
-        “status” : Integer,
-        “data” : [
-        {
-            “id” : Integer, // office record unique id
-            “type” : String, // type of office
-            “name”: String // name of office
-            }, {
-            “id” : Integer, // office record unique id
-            “type” : String, // type of office
-            “name”: String // name of office
-            }, {
-            “id” : Integer, // office record unique id
-            “type” : String, // type of office
-            “name”: String // name of office
-            }
-            ]
-        }
-        ```
+| Method   | Endpoint                             | Description                                 |
+| -------- | ------------------------------------ | -------------------------------------       |
+| `POST`   | `/api/v1/parties`                    | Create a new party                          |
+| `GET`    | `/api/v1/parties`                    | View all parties                            |
+| `GET`    | `api/v1/parties/<int:party_id>`      | Get party details by party Id               |
+| `PATCH`  | `api/v1/parties/<int:party_id>/name` | Update a party  name                        |
+| `DELETE` | `api/v1/parties/<int:party_id>`      | Delete a party by Id                        |
+| `GET`    | `/api/v1/offices`                    | View All offices                            |
+| `POST`   | `/api/v1/offices`                    | Post a new office                           |
+| `GET`    | `/api/v1/offices/<int:office_id>`    | Get a specific office                       |
 
-8. Endpoint: GET /offices/<office-id>
 
-        Fetch a specific political office record
+## Project managemnt 
+[Pivotal Tracker](https://www.pivotaltracker.com/n/projects/2241695)
 
-        Response spec:
-        ```
-        {
-        “status” : Integer,
-        “data” : [{
-            “id” : Integer, // office record unique id
-            “type” : String, // type of office
-            “name”: String // name of office
-            }]
-        }
-        ```
+## Test with Postman 
+
+For local app
+
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/11e358c7e2dac60c956f)

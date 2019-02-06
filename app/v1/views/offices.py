@@ -14,12 +14,7 @@ class Offices(Views):
     def create_party():
         post_data = Views.get_data()
 
-        validateRequired = Validate.required(
-            fields=['name', 'type'], dataDict=post_data)
-        if validateRequired['status'] == False:
-            res = jsonify(
-                {'status': 400, 'error': validateRequired['message'], 'data': []})
-            return make_response(res, 400)
+        Views.check_for_required_fields(fields=['name', 'type'], dataDict=post_data)
 
         validateName = Validate.validate_name(post_data['name'])
         if validateName['status'] == False:
