@@ -65,7 +65,7 @@ Political is impremented  using python data structures
    ```
 6. Manually Running tests
       ```
-         python -m pytest --cov=app/api
+         python -m pytest --cov=app
       ```
 7. Start the server
       ```
@@ -80,9 +80,9 @@ app is available at [http://127.0.0.1:5000/](http://127.0.0.1:5000/)
 | -------- | ------------------------------------ | -------------------------------------       |
 | `POST`   | `/api/v1/parties`                    | Create a new party                          |
 | `GET`    | `/api/v1/parties`                    | View all parties                            |
-| `GET`    | `api/v1/parties/<int:party_id>`      | Get party details by party Id               |
-| `PATCH`  | `api/v1/parties/<int:party_id>/name` | Update a party  name                        |
-| `DELETE` | `api/v1/parties/<int:party_id>`      | Delete a party by Id                        |
+| `GET`    | `/api/v1/parties/<int:party_id>`      | Get party details by party Id               |
+| `PATCH`  | `/api/v1/parties/<int:party_id>/name` | Update a party  name                        |
+| `DELETE` | `/api/v1/parties/<int:party_id>`      | Delete a party by Id                        |
 | `GET`    | `/api/v1/offices`                    | View All offices                            |
 | `POST`   | `/api/v1/offices`                    | Post a new office                           |
 | `GET`    | `/api/v1/offices/<int:office_id>`    | Get a specific office                       |
