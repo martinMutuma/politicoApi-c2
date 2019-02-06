@@ -22,3 +22,19 @@ class TestOffices(BaseTest):
         
         self.check_standard_reply(dataCheck, 201)
         self.assertEqual(dataCheck['data']['name'], office['name'])
+
+    def test_get_specific_office_details(self):
+        office2 = {
+        'name': 'Office B',
+        'type': 'legislative'
+        }
+        result = self.client().post("/api/v1/offices", data=office2)
+        dataCheck = json.loads(result.data)
+
+        result_get = self.client().get("/api/v1/offices/{}".format(dataCheck['data']['id']))
+        self.assertEqual(result_get.status_code, 200)
+
+        data_check_get = json.loads(result_get.data)
+        self.check_standard_reply(dataCheck, 200 )
+        self.assertEqual(data_check_get['data']['name'],office2['name'])
+        

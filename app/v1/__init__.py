@@ -17,6 +17,7 @@ v1_app.add_url_rule('/parties/<int:partyId>',view_func=Parties.delete_party, met
 
 #office  module Urls 
 v1_app.add_url_rule('/offices',view_func=Offices.create_party, methods=['POST'])
+v1_app.add_url_rule('/offices/<int:office_id>',view_func=Offices.get_details, methods=['GET'])
 
 
  

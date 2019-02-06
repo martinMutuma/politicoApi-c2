@@ -1,5 +1,6 @@
 [run]
 omit = 
+        travis/*
          venv/*
         tests/*
         *__init__*
@@ -9,4 +10,5 @@ omit =
         venv/*
         tests/*
         *__init__*
+        travis/*
     

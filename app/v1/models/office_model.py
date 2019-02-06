@@ -12,17 +12,14 @@ class OfficeModel(BaseModel):
         self.type = type  # federal, legislative, state, or local government
         self.name = name
 
-    def generate_id(self, id=0):
-        if id == 0:
-            id = len(officeList)+1
-
-        if id in officeList:
-            id = id+1
-            return self.generate_id(id)
-        return id
-
     def get_details(self):
-        return dict(id=self.id, name = self.name, type = self.type)
+        return dict(id=self.id, name=self.name, type=self.type)
+
+    @staticmethod
+    def search_office_by_id(id):
+        if id in officeList:
+            return officeList[id]
+        return False
 
     def save_office(self):
         officeList[self.id] = self
@@ -37,3 +34,12 @@ class OfficeModel(BaseModel):
             if officeList[i].name == name:
                 return i
         return False
+
+    def generate_id(self, id=0):
+        if id == 0:
+            id = len(officeList)+1
+
+        if id in officeList:
+            id = id+1
+            return self.generate_id(id)
+        return id

@@ -50,3 +50,16 @@ class Offices(Views):
         types_upper =[i.upper() for i in officeTypes]
         if type.upper() in types_upper:
             return True
+
+    @staticmethod
+    def get_details(office_id):
+        office = OfficeModel.search_office_by_id(office_id)
+        print(office)
+        if office:
+            return make_response(jsonify(
+                {'status':200, 'data':office.get_details()}
+            ), 200)
+        
+        return make_response(jsonify(
+            {'status':404, "error":'Office with id {} not found'.format(office_id)}
+        ))
