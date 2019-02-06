@@ -50,3 +50,7 @@ class Offices(Views):
         types_upper =[i.upper() for i in officeTypes]
         if type.upper() in types_upper:
             return True
+
+    @staticmethod
+    def get_details(office_id):
+        office = OfficeModel.search_office_by_id(id)
