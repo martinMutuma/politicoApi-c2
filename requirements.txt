@@ -29,7 +29,6 @@ pylint==2.2.2
 pypiwin32==223
 pytest==4.2.0
 pytest-cov==2.6.1
-pywin32==224
 requests==2.21.0
 six==1.12.0
 urllib3==1.24.1
