@@ -37,16 +37,11 @@ class TestParties(BaseTest):
         'logoUrl': 'www.url.com/party.png',
     }
 
-    def setUp(self):
-        
-        polApp.config.from_object(configs['testing'])
-        self.client = polApp.test_client
-        self.result1 = self.client().post('/api/v1/parties', data=self.party1b)
 
 
     def test_create_party(self):
         """ api/v1/parties Post test """
-        result = self.client().post('/api/v1/parties', data=self.party1)
+        result = self.post('/api/v1/parties', data=self.party1)
         dataCheck = json.loads(result.data)
         self.assertEqual(result.status_code, 201)
         self.assertTrue('status' in dataCheck)
@@ -58,7 +53,7 @@ class TestParties(BaseTest):
 
     def test_create_party_with_wrong_data(self):
         """ api/v1/parties Post test with invalid data"""
-        result = self.client().post('/api/v1/parties', data=self.party2)
+        result = self.post('/api/v1/parties', data=self.party2)
         dataCheck = json.loads(result.data)
         result2 = self.client().post('/api/v1/parties', data=self.party3)
         dataCheck2 = json.loads(result.data)
@@ -75,7 +70,7 @@ class TestParties(BaseTest):
 
     def test_get_specifi_party_details(self):
         """tests for endpoint /api/v1/parties/<partyId>"""
-        result12 = self.client().post('/api/v1/parties', data=self.party1c)
+        result12 = self.post('/api/v1/parties', data=self.party1c)
         dataCheck = json.loads(result12.data)
         resultGet1 = self.client().get(
             "/api/v1/parties/{}".format(dataCheck['data']['id']))
@@ -96,7 +91,7 @@ class TestParties(BaseTest):
 
     def test_update_party_name(self):
         """Tests for Patch Data /api/v1/parties/<int:partyid>/name"""
-        result12 = self.client().post('/api/v1/parties', data=self.party1d)
+        result12 = self.post('/api/v1/parties', data=self.party1d)
         dataCheck = json.loads(result12.data)
         patch_data = {'name': 'Change Party Name'}
         result = self.client().patch('/api/v1/parties/{}/name'.format(dataCheck['data']['id']), 
@@ -110,11 +105,15 @@ class TestParties(BaseTest):
 
     def test_delete_party(self):
         """Tests for [DELETE] /api/v1/parties/<int:partyId>to delete party"""
-    
-        result = self.client().delete('/api/v1/parties/1')
-        datacheck = json.loads(result.data)
-        self.check_standard_reply(datacheck, 200)
-        self.assertTrue('message' in datacheck['data'])
+        result12 = self.post('/api/v1/parties', data=self.party1c)
+        dataCheck = json.loads(result12.data)
+
+        result = self.client().delete("/api/v1/parties/{}".format(dataCheck['data']['id']))
+        self.assertEqual(result.status_code, 200)
+        
+        datacheck2 = json.loads(result.data)
+        self.check_standard_reply(datacheck2, 200)
+        self.assertTrue('message' in datacheck2['data'])
 
     def check_standard_reply(self, datacheck, status, error=False):
         self.assertTrue('status' in datacheck)

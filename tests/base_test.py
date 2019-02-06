@@ -11,14 +11,15 @@ class BaseTest(unittest.TestCase):
         self.client = polApp.test_client
 
         
+    def post(self , path, data={}):
+        result = self.client().post(path=path, data=data)
+        return result
 
-
-    def test_home(self):
+    def test_default_route(self):
         result = self.client().get('/')
         dataCheck = json.loads(result.data)
         self.assertEqual(result.status_code, 200)
         self.assertTrue('status' in dataCheck)
-        self.assertEqual(dataCheck['status'], 200)
         
     def check_standard_reply(self, datacheck, status, error=False):
         self.assertTrue('status' in datacheck)
@@ -28,4 +29,4 @@ class BaseTest(unittest.TestCase):
             self.assertTrue('error' in datacheck)
 
     def tearDown(self):
-        self.client = None
+        self.client().get('/api/v1/d')
