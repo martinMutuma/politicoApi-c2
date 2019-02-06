@@ -63,3 +63,11 @@ class Offices(Views):
         return make_response(jsonify(
             {'status':404, "error":'Office with id {} not found'.format(office_id)}
         ))
+
+    @classmethod
+    def get_all_offices(cls):
+        """Lists all parties"""
+        res = jsonify({"status": 200,
+                        'data': [officeList[i].get_details() for i in officeList]
+                        })
+        return make_response(res, 200)
