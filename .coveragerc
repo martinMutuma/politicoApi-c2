@@ -1,14 +1,6 @@
 [run]
-omit = 
-        travis/*
-         venv/*
-        tests/*
-        *__init__*
+source = .
         
 [report]    
-omit =  
-        venv/*
-        tests/*
-        *__init__*
-        travis/*
+source = .
     
