@@ -26,7 +26,6 @@ portalocker==1.3.0
 py==1.7.0
 pycodestyle==2.5.0
 pylint==2.2.2
-pypiwin32==223
 pytest==4.2.0
 pytest-cov==2.6.1
 requests==2.21.0
