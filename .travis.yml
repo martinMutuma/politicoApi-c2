@@ -14,11 +14,11 @@ before_script:
     - export FLASK_DEBUG=1
     - export FLASK_ENV=development
 script:
-   - nosetests tests --with-coverage
-  #  - pytest
+   #- nosetests tests --with-coverage
+   - python -m pytest  --cov=app
 
 after_success:
-  - coveralls --base_dir app
+  - coveralls --base_dir app/
   - codeclimate -test-reporter
 
 
