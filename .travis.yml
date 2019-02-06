@@ -18,7 +18,7 @@ script:
   #  - pytest
 
 after_success:
-  - coveralls
+  - coveralls --base_dir app
   - codeclimate -test-reporter
 
 
