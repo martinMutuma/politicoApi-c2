@@ -1,6 +1,10 @@
 [run]
-source = app/
+omit = 
+        travis/*
+        travis/
         
 [report]    
-source = app/
+omit = 
+      travis/*
+      travis/
     
