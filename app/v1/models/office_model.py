@@ -8,7 +8,7 @@ class OfficeModel(BaseModel):
     '''Represents an office, with a name.'''
 
     def __init__(self, name, type, id=0):
-        self.id = self.generate_id()
+        self.id = self.generate_id(officeList)
         self.type = type  # federal, legislative, state, or local government
         self.name = name
 
@@ -24,7 +24,7 @@ class OfficeModel(BaseModel):
     def save_office(self):
         officeList[self.id] = self
 
-    def delete_party(self):
+    def delete(self):
         del officeList[self.id]
 
     def check_name_exists(self, name=None):
@@ -35,11 +35,10 @@ class OfficeModel(BaseModel):
                 return i
         return False
 
-    def generate_id(self, id=0):
-        if id == 0:
-            id = len(officeList)+1
+    def update(self, name, type=False):
+        self.name = name
+        if type:
+            self.type = type
 
-        if id in officeList:
-            id = id+1
-            return self.generate_id(id)
-        return id
+
+   

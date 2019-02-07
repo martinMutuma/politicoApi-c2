@@ -11,7 +11,7 @@ class PartyModel(BaseModel):
         self.name = name
         self.hqAddress = hqAddress
         self.logoUrl = logoUrl
-        self.id = self.generate_id()
+        self.id = self.generate_id(partiesList)
        
 
 
@@ -27,17 +27,6 @@ class PartyModel(BaseModel):
 
     def update_name(self, name):
         self.name = name
-        
-
-
-    def generate_id(self, id=0):
-        if id == 0:
-            id = len(partiesList)+1
-
-        if id in partiesList:
-            id = id+1
-            return self.generate_id(id)
-        return id
 
 
     def save_party(self):

@@ -9,12 +9,21 @@ class TestOffices(BaseTest):
     """ 
     Test endpoints  app/v1/offices 
     """
+    office1 = {
+        'name': 'Office A',
+        'type': 'state'
+        }
 
+    office1d = {
+        'name': 'Office b',
+        'type': 'state'
+        }
     def test_create_office(self):
         office = {
         'name': 'Office A',
         'type': 'state'
         }
+       
         
         result = self.client().post("/api/v1/offices", data=office)
         self.assertEqual(result.status_code, 201)
@@ -50,3 +59,29 @@ class TestOffices(BaseTest):
 
         data_check_get = json.loads(result_get.data)
         self.check_standard_reply(data_check_get, 200 )
+
+    def test_update_office_name(self):
+        """Tests for Patch Data /api/v1/offices/<int:officeid>/name"""
+        result12 = self.post('/api/v1/offices', data=self.office1d)
+        dataCheck = json.loads(result12.data)
+        patch_data = {'name': 'Change Office Name'}
+        result = self.client().patch('/api/v1/offices/{}/name'.format(dataCheck['data']['id']), 
+                                        data=patch_data)
+
+        self.assertEqual(result.status_code, 202)
+
+        datacheck = json.loads(result.data)
+        self.check_standard_reply(datacheck, 202)
+        self.assertEqual(datacheck['data']['name'], patch_data['name'])
+
+    def test_delete_office(self):
+        """Tests for [DELETE] /api/v1/offices/<int:officeId>to delete office"""
+        result12 = self.post('/api/v1/offices', data=self.office1d)
+        dataCheck = json.loads(result12.data)
+
+        result = self.client().delete("/api/v1/offices/{}".format(dataCheck['data']['id']))
+        self.assertEqual(result.status_code, 200)
+        
+        datacheck2 = json.loads(result.data)
+        self.check_standard_reply(datacheck2, 200)
+        self.assertTrue('message' in datacheck2['data'])

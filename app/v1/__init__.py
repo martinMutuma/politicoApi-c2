@@ -18,11 +18,14 @@ v1_app.add_url_rule('/parties/<int:partyId>',view_func=Parties.delete_party, met
 
 
 #office  module Urls 
-v1_app.add_url_rule('/offices',view_func=Offices.create_party, methods=['POST'])
+v1_app.add_url_rule('/offices',view_func=Offices.create_office, methods=['POST'])
 v1_app.add_url_rule('/offices/<int:office_id>',view_func=Offices.get_details, methods=['GET'])
 v1_app.add_url_rule('/offices',view_func=Offices.get_all_offices, methods=['GET'])
+v1_app.add_url_rule('/offices/<int:office_id>/name',view_func=Offices.update_office_details, methods=['PATCH'])
+v1_app.add_url_rule('/offices/<int:office_id>',view_func=Offices.delete_office, methods=['DELETE'])
 
-#office module 
+
+#Clear data 
 v1_app.add_url_rule('/d', view_func=Views.destroy_lists )
 
  
