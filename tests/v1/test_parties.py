@@ -68,7 +68,7 @@ class TestParties(BaseTest):
         self.assertEqual(dataCheck2['status'], 400)
         self.assertTrue('error' in dataCheck2)
 
-    def test_get_specifi_party_details(self):
+    def test_get_party_details(self):
         """tests for endpoint /api/v1/parties/<partyId>"""
         result12 = self.post('/api/v1/parties', data=self.party1c)
         dataCheck = json.loads(result12.data)
@@ -80,7 +80,7 @@ class TestParties(BaseTest):
         self.check_standard_reply(dataCheckGet, 200)
 
         self.assertEqual(dataCheckGet['data']['name'], dataCheck['data']['name'])
-
+    
     def test_get_all_parties(self):
         """Test get parties"""
         resultGet = self.client().get("/api/v1/parties/")
@@ -115,11 +115,3 @@ class TestParties(BaseTest):
         self.check_standard_reply(datacheck2, 200)
         self.assertTrue('message' in datacheck2['data'])
 
-    def check_standard_reply(self, datacheck, status, error=False):
-        self.assertTrue('status' in datacheck)
-        if not error:
-            self.assertTrue('data' in datacheck)
-        else:
-            self.assertTrue('error' in datacheck)
-
-        self.assertEqual(datacheck['status'], status)

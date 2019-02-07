@@ -11,7 +11,7 @@ class Offices(Views):
     """All Control for office Routes"""
 
     @staticmethod
-    def create_party():
+    def create_office():
         post_data = Views.get_data()
 
         Views.check_for_required_fields(fields=['name', 'type'], dataDict=post_data)
@@ -34,7 +34,7 @@ class Offices(Views):
         name_exists = new_office.check_name_exists()
         if name_exists:
             # pass
-            res = jsonify({'status': 400, 'error': "Duplicate name error, Party {} already exists with id {}".format(
+            res = jsonify({'status': 400, 'error': "Duplicate name error, Office {} already exists with id {}".format(
                 post_data['name'], name_exists), 'data': []})
             return make_response(res, 400)
         new_office.save_office()
@@ -61,8 +61,40 @@ class Offices(Views):
 
     @classmethod
     def get_all_offices(cls):
-        """Lists all parties"""
+        """Lists all Offices"""
         res = jsonify({"status": 200,
                         'data': [officeList[i].get_details() for i in officeList]
                         })
         return make_response(res, 200)
+
+
+    @classmethod
+    def update_office_details(cls, office_id):
+        patch_data = Views.get_data()
+
+        cls.check_for_required_fields(fields=['name'], dataDict=patch_data)
+        if office_id in officeList:
+            officeList[office_id].update(patch_data['name'])
+            res = {"status": 202, "data": officeList[office_id].get_details()}
+            return make_response(jsonify(res), 202)  # Accepted
+
+        res = jsonify(
+            {"status": 404, 'error': "Office with id {} not found".format(office_id)})
+        return make_response(res, 404)
+
+    @classmethod
+    def delete_office(cls, office_id):
+        """Delete office from list of offices"""
+        if office_id in officeList:
+            deleted_office = officeList[office_id]
+            officeList[office_id].delete()
+            res = {
+                'status': 200,
+                'data': {'message': "Office {} deleted".format(deleted_office.name)}
+            }
+            return make_response(jsonify(res), 200)
+
+        res = jsonify(
+            {"status": 404, 'error': "Office with id {} not found".format(office_id)})
+        return make_response(res, 404)
+
