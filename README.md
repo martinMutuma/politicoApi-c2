@@ -99,4 +99,4 @@ For local app
 
 app on Heroku 
 
-[![Run in Postman heroku](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/c119a7e3214363b2729d)
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/80ae6b6b1d58956222b3)
