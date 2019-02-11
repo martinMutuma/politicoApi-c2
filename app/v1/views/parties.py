@@ -1,6 +1,5 @@
 """app/v1/views/parties.py """
 import copy
-# from app.v1 import v1_app
 from flask import request, make_response, jsonify, abort
 from app.v1.views.validate import Validate
 from app.v1.views import Views
@@ -21,12 +20,6 @@ class Parties(Views):
             res = jsonify({'status': 400, 'error': "hqAddress " +
                            validateAddressLen['message'], 'data': []})
             return make_response(res, 400)
-
-        # validateLogoUrl = Validate.validate_url(data['logoUrl'])
-        # if validateLogoUrl['status'] == False:
-        #         res = jsonify({'status':400, 'error':"logoUrl "+validateLogoUrl['message'], 'data':[]})
-        #         return make_response(res, 400)
-
         party = None
         party = PartyModel(data['name'], data['hqAddress'], data['logoUrl'])
 
@@ -35,7 +28,7 @@ class Parties(Views):
         res = jsonify({"status": 201, 'data': returnPartydetails})
         return make_response(res, 201)
 
-    # @v1_app.route('/parties/<partyId>', methods=['GET'])
+    
     @classmethod
     def get_party_details(cls, partyId):
         """Get the details of a specific party"""

@@ -27,12 +27,12 @@ class TestParties(BaseTest):
         'hqAddress': '23 jumpstreet',
         'logoUrl': 'www.url.com/party.png',
     }
-    party2 = {
+    party_short_name= {
         'name': 'Par',
         'hqAddress': '21 jumpstreet',
         'logoUrl': 'www.url.com/party.png',
     }
-    party3 = {
+    party_missing_data= {
         'name': 'Par',
         'logoUrl': 'www.url.com/party.png',
     }
@@ -53,9 +53,9 @@ class TestParties(BaseTest):
 
     def test_create_party_with_wrong_data(self):
         """ api/v1/parties Post test with invalid data"""
-        result = self.post('/api/v1/parties', data=self.party2)
+        result = self.post('/api/v1/parties', data=self.party_short_name)
         dataCheck = json.loads(result.data)
-        result2 = self.client().post('/api/v1/parties', data=self.party3)
+        result2 = self.client().post('/api/v1/parties', data=self.party_missing_data)
         dataCheck2 = json.loads(result.data)
 
         self.assertEqual(result.status_code, 400)

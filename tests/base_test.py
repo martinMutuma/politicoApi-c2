@@ -21,6 +21,19 @@ class BaseTest(unittest.TestCase):
         self.assertEqual(result.status_code, 200)
         self.assertTrue('status' in dataCheck)
         
+
+    def test_page_not_found(self):
+        result = self.client().get('/page_not_found')
+        dataCheck = json.loads(result.data)
+        self.assertEqual(result.status_code, 404)
+        self.check_standard_reply(dataCheck, 404, error=True)
+  
+    def test_method_not_allowed(self):
+        result = self.client().post('/')
+        dataCheck = json.loads(result.data)
+        self.assertEqual(result.status_code, 405)
+        self.check_standard_reply(dataCheck, 405, error=True)
+
     def check_standard_reply(self, datacheck, status, error=False):
         self.assertTrue('status' in datacheck)
         if not error:
