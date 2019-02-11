@@ -22,6 +22,8 @@ class Validate:
         """Name validation
         should not contain special characters and len > 3
         """
+        name = name.strip()
+        print(name)
         if bool(re.search(special_chars, name) )is True:
             return  cls.make_retun_dict(False, "Name Should not contain special characters")
         elif len(name) <= 3:

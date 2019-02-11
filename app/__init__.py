@@ -12,7 +12,6 @@ polApp = Flask(__name__)
 polApp.config.from_object(configs['production'])
 polApp.register_blueprint(v1_app, url_prefix='/api/v1')
 
-# from app.v1.views.parties import *
 @polApp.route('/', methods=['GET'])
 def home():
     """Default Home route when you load the app"""

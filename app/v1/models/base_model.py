@@ -16,3 +16,10 @@ class BaseModel:
     def delete(self, modelList, id):
         del modelList[id]
         return modelList
+        
+    @staticmethod
+    def check_name_exists(the_list, name):
+        for i in the_list:
+            if the_list[i].name == name:
+                return i
+        return False

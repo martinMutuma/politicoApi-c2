@@ -31,7 +31,7 @@ class Offices(Views):
 
         new_office = None
         new_office = OfficeModel(post_data['name'], post_data['type'])
-        name_exists = new_office.check_name_exists()
+        name_exists = OfficeModel.check_name_exists(officeList, new_office.name)
         if name_exists:
             # pass
             res = jsonify({'status': 400, 'error': "Duplicate name error, Office {} already exists with id {}".format(
@@ -62,10 +62,8 @@ class Offices(Views):
     @classmethod
     def get_all_offices(cls):
         """Lists all Offices"""
-        res = jsonify({"status": 200,
-                        'data': [officeList[i].get_details() for i in officeList]
-                        })
-        return make_response(res, 200)
+        res = {"status": 200, 'data': [officeList[i].get_details() for i in officeList]}
+        return make_response(jsonify(res), res['status'])
 
 
     @classmethod
@@ -88,13 +86,10 @@ class Offices(Views):
         if office_id in officeList:
             deleted_office = officeList[office_id]
             officeList[office_id].delete()
-            res = {
-                'status': 200,
+            res = { 'status': 200,
                 'data': {'message': "Office {} deleted".format(deleted_office.name)}
             }
-            return make_response(jsonify(res), 200)
-
-        res = jsonify(
-            {"status": 404, 'error': "Office with id {} not found".format(office_id)})
-        return make_response(res, 404)
+        else:
+             res =  {"status": 404, 'error': "Office with id {} not found".format(office_id)}
+        return make_response(jsonify(res), res['status'])
 
