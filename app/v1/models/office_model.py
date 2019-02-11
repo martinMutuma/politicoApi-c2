@@ -27,13 +27,6 @@ class OfficeModel(BaseModel):
     def delete(self):
         del officeList[self.id]
 
-    def check_name_exists(self, name=None):
-        if name == None:
-            name = self.name
-        for i in officeList:
-            if officeList[i].name == name:
-                return i
-        return False
 
     def update(self, name, type=False):
         self.name = name

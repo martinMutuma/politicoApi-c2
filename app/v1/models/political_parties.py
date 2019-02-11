@@ -35,11 +35,5 @@ class PartyModel(BaseModel):
 
     def delete_party(self):
         del partiesList[self.id]
+        return partiesList
 
-    def check_name_exists(self, name=None):
-        if name == None:
-            name = self.name
-        for i in partiesList:
-            if partiesList[i].name == name:
-                 return i
-        return False

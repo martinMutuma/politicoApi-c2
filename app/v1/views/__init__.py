@@ -38,3 +38,5 @@ class Views(object):
         partiesList.clear()
         officeList.clear()
         return make_response("Done", 200)
+
+   

@@ -61,11 +61,11 @@ class TestOffices(BaseTest):
         self.check_standard_reply(data_check_get, 200 )
 
     def test_update_office_name(self):
-        """Tests for Patch Data /api/v1/offices/<int:officeid>/name"""
+        """Tests for Patch Data /api/v1/offices/<int:officeid>/"""
         result12 = self.post('/api/v1/offices', data=self.office1d)
         dataCheck = json.loads(result12.data)
         patch_data = {'name': 'Change Office Name'}
-        result = self.client().patch('/api/v1/offices/{}/name'.format(dataCheck['data']['id']), 
+        result = self.client().patch('/api/v1/offices/{}'.format(dataCheck['data']['id']), 
                                         data=patch_data)
 
         self.assertEqual(result.status_code, 202)

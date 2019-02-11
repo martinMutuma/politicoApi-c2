@@ -90,11 +90,11 @@ class TestParties(BaseTest):
         self.check_standard_reply(dataCheckGet, 200)
 
     def test_update_party_name(self):
-        """Tests for Patch Data /api/v1/parties/<int:partyid>/name"""
+        """Tests for Patch Data /api/v1/parties/<int:partyid>"""
         result12 = self.post('/api/v1/parties', data=self.party1d)
         dataCheck = json.loads(result12.data)
         patch_data = {'name': 'Change Party Name'}
-        result = self.client().patch('/api/v1/parties/{}/name'.format(dataCheck['data']['id']), 
+        result = self.client().patch('/api/v1/parties/{}'.format(dataCheck['data']['id']), 
                                         data=patch_data)
 
         self.assertEqual(result.status_code, 202)
