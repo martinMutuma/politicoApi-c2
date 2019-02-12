@@ -1,3 +1,7 @@
+"""
+app/v1/views/validate.py
+"""
+
 import re
 from urllib.parse import urlparse
 special_chars = r'[0-9~!@#$%^&*()_-`{};:\'"\|/?.>,<]'
@@ -47,6 +51,11 @@ class Validate:
     
     @classmethod
     def validate_url(cls, Url):
+        """
+        To validate urls 
+        Takes url as the parameter 
+        
+        """
         try:
             result = urlparse(Url)
             if all([result.scheme, result.netloc,result.path]):

@@ -27,6 +27,10 @@ def home():
 
 @polApp.errorhandler(404)
 def endpoint_not_found(*args):
+    """Handles all error 404 responses 
+        For compliance with API endpoint standard replies n]
+    """
+
     res = dict(
         error = "Endpoint not found",
         status = 404
@@ -36,17 +40,27 @@ def endpoint_not_found(*args):
 
 @polApp.errorhandler(500)
 def endpoint_server_error(*args):
-    res = dict(
-        error = "Its not you, its us",
-        status = 500
-    )
+    """ Handles server errors
+    """
+
+    res ={
+        "error" : "Its not you, its us",
+        "status" : 500
+    }
     return make_response(jsonify(res), 500)
 
 
 @polApp.errorhandler(405)
 def method_not_allowed(*args):
-    res = dict(
+    """
+    Handles method not allowed erros
+   
+    """
+
+    res =jsonify(dict(
         error = "Method not allowed",
         status = 405
-    )
-    return make_response(jsonify(res), 405)
+    ))
+    return make_response(res, 405)
+
+
