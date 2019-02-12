@@ -26,6 +26,17 @@ class Views(object):
 
     @classmethod
     def check_for_required_fields(cls,  fields=[], dataDict={}):
+        """Uses validate class to validate all required fields exist in the submitted data 
+        
+        Keyword Arguments:
+            fields {list} -- [fieds expected by the function] (default: {[]})
+            dataDict {dict} -- [Fields and data submitted by the user] (default: {{}})
+        
+        Returns:
+            [bool] -- [True if all fields exist]
+            [httt exit] if any of the fields do not exist
+        """
+
         validateRequired = Validate.required(fields=fields, dataDict=dataDict)
         if validateRequired['status'] == False:
             res = jsonify(
@@ -35,6 +46,11 @@ class Views(object):
 
     @staticmethod
     def destroy_lists():
+        """
+        used by when testing incase one wants to clean up the data and test a flesh
+        
+        """
+
         partiesList.clear()
         officeList.clear()
         return make_response("Done", 200)

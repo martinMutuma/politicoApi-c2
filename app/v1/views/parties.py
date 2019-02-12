@@ -53,6 +53,15 @@ class Parties(Views):
 
     @classmethod
     def update_party_details(cls, partyId):
+        """update party details (impremented name update only)
+        
+        Arguments:
+            partyId {int} -- The Party id to upate
+        
+        Returns:
+            Returns a http response-- depenfing on the actions taken
+        """
+
         patch_data = Views.get_data()
 
         cls.check_for_required_fields(fields=['name'], dataDict=patch_data)
@@ -61,11 +70,10 @@ class Parties(Views):
         if partyId in partiesList:
             partiesList[partyId].update_name(patch_data['name'])
             res = {"status": 202, "data": partiesList[partyId].name_and_id()}
-            return make_response(jsonify(res), 202)  # Accepted
-
-        res = jsonify(
+        else:
+                res = jsonify(
             {"status": 404, 'error': "Party with id {} not found".format(partyId)})
-        return make_response(res, 404)
+        return make_response(jsonify(res), res['status'])
 
     @classmethod
     def delete_party(cls, partyId):
