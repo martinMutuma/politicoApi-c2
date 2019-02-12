@@ -14,14 +14,16 @@ class Views(object):
         if request.is_json:
             data = request.get_json()
         else:
-            data = request.form
+            data = request.form.to_dict()
 
         if not data:
             try:
                 data = request.get_json(force=True)  
             except:
                 data = dict() 
-
+        for key,value in data.items():
+            data[key] = value.strip()
+        
         return data
 
     @classmethod
