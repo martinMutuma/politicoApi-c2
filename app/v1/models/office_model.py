@@ -39,17 +39,24 @@ class OfficeModel(BaseModel):
 
     def save_office(self):
         """
-        Insert the object into the list of parties
+        Insert the object into the list of offices
         """
 
         officeList[self.id] = self
 
     def delete(self):
+        """
+        Delete the object from the list of offices
+        """
         del officeList[self.id]
 
 
     def update(self, name, type=False):
+        """
+        Update the details of  object 
+        """
         self.name = name
+
         if type:
             self.type = type
 
