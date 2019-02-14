@@ -87,16 +87,22 @@ app is available at [http://127.0.0.1:5000/](http://127.0.0.1:5000/)
 | `POST`   | `/api/v1/offices`                    | Post a new office                           |
 | `GET`    | `/api/v1/offices/<int:office_id>`    | Get a specific office                       |
 
+##Political v2 Endpoints
+
+| Method   | Endpoint                             | Description                                 |
+| -------- | ------------------------------------ | -------------------------------------       |
+| `POST`   | `/api/v2/parties`                    | Create a new party                          |
+| `GET`    | `/api/v2/parties`                    | View all parties                            |
+| `GET`    | `/api/v2/parties/<int:party_id>`      | Get party details by party Id               |
+| `PATCH`  | `/api/v2/parties/<int:party_id>/name` | Update a party  name                        |
+| `DELETE` | `/api/v2/parties/<int:party_id>`      | Delete a party by Id                        |
+| `GET`    | `/api/v2/offices`                    | View All offices                            |
+| `POST`   | `/api/v2/offices`                    | Post a new office                           |
+| `GET`    | `/api/v2/offices/<int:office_id>`    | Get a specific office                       |
 
 ## Project managemnt 
 [Pivotal Tracker](https://www.pivotaltracker.com/n/projects/2241695)
 
-## Test with Postman 
+## Project documentation and endpoint Manual test
 
-For local app
-
-[![Run in Postman local](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/11e358c7e2dac60c956f)
-
-app on Heroku 
-
-[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/80ae6b6b1d58956222b3)
+## [Api v2 Documentation](https://political.docs.apiary.io/)
