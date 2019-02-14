@@ -7,6 +7,7 @@ class Config:
     DEBUG = False
     FLASK_DEBUG = 0
     SECRET_KEY = "You can do this man"
+    JWT_ALGORITHM = 'HS256'
     # CONNECTION_STRING = "dbname='political' user='postgres' host='localhost' password='admin' port='5432'"
     CONNECTION_STRING = os.environ["CONNECTION_STRING"]
 
