@@ -10,20 +10,16 @@ class TestOffices(BaseTest):
     Test endpoints  app/v2/offices 
     """
     office1 = {
-        'name': 'Office A',
+        'name': BaseTest().random_name(10),
         'type': 'state'
         }
 
     office1d = {
-        'name': 'Office b',
+        'name': BaseTest().random_name(10),
         'type': 'state'
         }
     def test_create_office(self):
-        office = {
-        'name': 'Office Arrrrrr',
-        'type': 'state'
-        }
-       
+        office =self.generate_random_office()
         
         result = self.client().post("/api/v2/offices", data=office)
         print(result.__dict__)
@@ -34,10 +30,7 @@ class TestOffices(BaseTest):
       
 
     def test_get_specific_office_details(self):
-        office2 = {
-        'name': 'Office B',
-        'type': 'legislative'
-        }
+        office2 = self.generate_random_office()
         result = self.client().post("/api/v2/offices", data=office2)
         dataCheck = json.loads(result.data)
 
@@ -63,7 +56,8 @@ class TestOffices(BaseTest):
 
     def test_update_office_name(self):
         """Tests for Patch Data /api/v2/offices/<int:officeid>/"""
-        result12 = self.post('/api/v2/offices', data=self.office1d)
+        office1d = self.generate_random_office();
+        result12 = self.post('/api/v2/offices', data=office1d)
         dataCheck = json.loads(result12.data)
         patch_data = {'name': 'Change Office Name'}
         result = self.client().patch('/api/v2/offices/{}'.format(dataCheck['data']['id']), 
@@ -77,7 +71,8 @@ class TestOffices(BaseTest):
 
     def test_delete_office(self):
         """Tests for [DELETE] /api/v2/offices/<int:officeId>to delete office"""
-        result12 = self.post('/api/v2/offices', data=self.office1d)
+        office1d = self.generate_random_office();
+        result12 = self.post('/api/v2/offices', data=office1d)
         dataCheck = json.loads(result12.data)
 
         result = self.client().delete("/api/v2/offices/{}".format(dataCheck['data']['id']))
@@ -86,3 +81,9 @@ class TestOffices(BaseTest):
         datacheck2 = json.loads(result.data)
         self.check_standard_reply(datacheck2, 200)
         self.assertTrue('message' in datacheck2['data'])
+
+    def generate_random_office(self):
+        return {
+        'name': BaseTest().random_name(10),
+        'type': 'state'
+        }

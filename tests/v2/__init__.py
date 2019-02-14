@@ -1,3 +1,5 @@
+import random
+import string
 from instance.config import configs
 import unittest
 import json
@@ -29,6 +31,12 @@ class BaseTest(unittest.TestCase):
         else:
             self.assertTrue('error' in datacheck)
 
+    @staticmethod
+    def random_name(stringLength=10):
+        """Generate a random string with the combination of lowercase and uppercase letters """
+        letters = string.ascii_letters
+        return ''.join(random.choice(letters) for i in range(stringLength))
+
     def tearDown(self):
-        # pass
-        db.drop()
+        pass
+        # db.drop()

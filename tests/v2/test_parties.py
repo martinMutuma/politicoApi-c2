@@ -3,7 +3,6 @@ import json
 from tests.v2 import BaseTest
 
 
-
 class TestParties(BaseTest):
     """ Test endpoints  app/v1/parties """
     party1 = {
@@ -26,17 +25,15 @@ class TestParties(BaseTest):
         'hqAddress': '23 jumpstreet',
         'logoUrl': 'www.url.com/party.png',
     }
-    party_short_name= {
+    party_short_name = {
         'name': 'Par',
         'hqAddress': '21 jumpstreet',
         'logoUrl': 'www.url.com/party.png',
     }
-    party_missing_data= {
+    party_missing_data = {
         'name': 'Par',
         'logoUrl': 'www.url.com/party.png',
     }
-
-
 
     def test_create_party(self):
         """ api/v2/parties Post test """
@@ -47,7 +44,6 @@ class TestParties(BaseTest):
         self.assertEqual(dataCheck['status'], 201)
         self. assertTrue('data' in dataCheck)
         self.assertTrue('id' in dataCheck['data'])
-        self.assertTrue(isinstance(dataCheck['data']['id'], int))
         self.assertEqual(dataCheck['data']['name'], self.party1['name'])
 
     def test_create_party_with_wrong_data(self):
@@ -69,7 +65,9 @@ class TestParties(BaseTest):
 
     def test_get_party_details(self):
         """tests for endpoint /api/v2/parties/<partyId>"""
-        result12 = self.post('/api/v2/parties', data=self.party1c)
+        party1c=self.gen_party()
+
+        result12 = self.post('/api/v2/parties', data=party1c)
         dataCheck = json.loads(result12.data)
         resultGet1 = self.client().get(
             "/api/v2/parties/{}".format(dataCheck['data']['id']))
@@ -78,8 +76,9 @@ class TestParties(BaseTest):
         dataCheckGet = json.loads(resultGet1.data)
         self.check_standard_reply(dataCheckGet, 200)
 
-        self.assertEqual(dataCheckGet['data']['name'], dataCheck['data']['name'])
-    
+        self.assertEqual(dataCheckGet['data']
+                         ['name'], dataCheck['data']['name'])
+
     def test_get_all_parties(self):
         """Test get parties"""
         resultGet = self.client().get("/api/v2/parties/")
@@ -90,11 +89,12 @@ class TestParties(BaseTest):
 
     def test_update_party_name(self):
         """Tests for Patch Data /api/v2/parties/<int:partyid>"""
-        result12 = self.post('/api/v2/parties', data=self.party1d)
+        party1c=self.gen_party()
+        result12 = self.post('/api/v2/parties', data=party1c)
         dataCheck = json.loads(result12.data)
         patch_data = {'name': 'Change Party Name'}
-        result = self.client().patch('/api/v2/parties/{}'.format(dataCheck['data']['id']), 
-                                        data=patch_data)
+        result = self.client().patch('/api/v2/parties/{}'.format(dataCheck['data']['id']),
+                                     data=patch_data)
 
         self.assertEqual(result.status_code, 202)
 
@@ -104,13 +104,21 @@ class TestParties(BaseTest):
 
     def test_delete_party(self):
         """Tests for [DELETE] /api/v2/parties/<int:partyId>to delete party"""
-        result12 = self.post('/api/v2/parties', data=self.party1c)
+        party1c=self.gen_party()
+        result12 = self.post('/api/v2/parties', data=party1c)
         dataCheck = json.loads(result12.data)
 
-        result = self.client().delete("/api/v2/parties/{}".format(dataCheck['data']['id']))
+        result = self.client().delete(
+            "/api/v2/parties/{}".format(dataCheck['data']['id']))
         self.assertEqual(result.status_code, 200)
-        
+
         datacheck2 = json.loads(result.data)
         self.check_standard_reply(datacheck2, 200)
         self.assertTrue('message' in datacheck2['data'])
 
+    def gen_party(self):
+        return {
+            'name': BaseTest().random_name(10),
+            'hqAddress': '23 jumpstreet',
+            'logoUrl': 'www.url.com/ '+ BaseTest().random_name(10),
+        }
