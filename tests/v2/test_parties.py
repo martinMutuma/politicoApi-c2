@@ -1,7 +1,7 @@
-"""app/test/test_v1_party_create.py """
+"""app/test/v2/test_party_create.py """
 import json
-from instance.config import configs
-from tests.base_test import BaseTest
+from tests.v2 import BaseTest
+
 
 
 class TestParties(BaseTest):
@@ -39,8 +39,8 @@ class TestParties(BaseTest):
 
 
     def test_create_party(self):
-        """ api/v1/parties Post test """
-        result = self.post('/api/v1/parties', data=self.party1)
+        """ api/v2/parties Post test """
+        result = self.post('/api/v2/parties', data=self.party1)
         dataCheck = json.loads(result.data)
         self.assertEqual(result.status_code, 201)
         self.assertTrue('status' in dataCheck)
@@ -51,10 +51,10 @@ class TestParties(BaseTest):
         self.assertEqual(dataCheck['data']['name'], self.party1['name'])
 
     def test_create_party_with_wrong_data(self):
-        """ api/v1/parties Post test with invalid data"""
-        result = self.post('/api/v1/parties', data=self.party_short_name)
+        """ api/v2/parties Post test with invalid data"""
+        result = self.post('/api/v2/parties', data=self.party_short_name)
         dataCheck = json.loads(result.data)
-        result2 = self.client().post('/api/v1/parties', data=self.party_missing_data)
+        result2 = self.client().post('/api/v2/parties', data=self.party_missing_data)
         dataCheck2 = json.loads(result.data)
 
         self.assertEqual(result.status_code, 400)
@@ -68,11 +68,11 @@ class TestParties(BaseTest):
         self.assertTrue('error' in dataCheck2)
 
     def test_get_party_details(self):
-        """tests for endpoint /api/v1/parties/<partyId>"""
-        result12 = self.post('/api/v1/parties', data=self.party1c)
+        """tests for endpoint /api/v2/parties/<partyId>"""
+        result12 = self.post('/api/v2/parties', data=self.party1c)
         dataCheck = json.loads(result12.data)
         resultGet1 = self.client().get(
-            "/api/v1/parties/{}".format(dataCheck['data']['id']))
+            "/api/v2/parties/{}".format(dataCheck['data']['id']))
         self.assertEqual(resultGet1.status_code, 200)
 
         dataCheckGet = json.loads(resultGet1.data)
@@ -82,18 +82,18 @@ class TestParties(BaseTest):
     
     def test_get_all_parties(self):
         """Test get parties"""
-        resultGet = self.client().get("/api/v1/parties/")
+        resultGet = self.client().get("/api/v2/parties/")
         self.assertEqual(resultGet.status_code, 200)
 
         dataCheckGet = json.loads(resultGet.data)
         self.check_standard_reply(dataCheckGet, 200)
 
     def test_update_party_name(self):
-        """Tests for Patch Data /api/v1/parties/<int:partyid>"""
-        result12 = self.post('/api/v1/parties', data=self.party1d)
+        """Tests for Patch Data /api/v2/parties/<int:partyid>"""
+        result12 = self.post('/api/v2/parties', data=self.party1d)
         dataCheck = json.loads(result12.data)
         patch_data = {'name': 'Change Party Name'}
-        result = self.client().patch('/api/v1/parties/{}'.format(dataCheck['data']['id']), 
+        result = self.client().patch('/api/v2/parties/{}'.format(dataCheck['data']['id']), 
                                         data=patch_data)
 
         self.assertEqual(result.status_code, 202)
@@ -103,11 +103,11 @@ class TestParties(BaseTest):
         self.assertEqual(datacheck['data']['name'], patch_data['name'])
 
     def test_delete_party(self):
-        """Tests for [DELETE] /api/v1/parties/<int:partyId>to delete party"""
-        result12 = self.post('/api/v1/parties', data=self.party1c)
+        """Tests for [DELETE] /api/v2/parties/<int:partyId>to delete party"""
+        result12 = self.post('/api/v2/parties', data=self.party1c)
         dataCheck = json.loads(result12.data)
 
-        result = self.client().delete("/api/v1/parties/{}".format(dataCheck['data']['id']))
+        result = self.client().delete("/api/v2/parties/{}".format(dataCheck['data']['id']))
         self.assertEqual(result.status_code, 200)
         
         datacheck2 = json.loads(result.data)

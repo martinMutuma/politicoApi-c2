@@ -1,7 +1,9 @@
-from app import polApp
+
 from instance.config import configs
 import unittest
 import json
+from run import polApp
+
 
 class BaseTest(unittest.TestCase):
     '''Sets up the initial repeated tasks for all tests'''
@@ -17,8 +19,10 @@ class BaseTest(unittest.TestCase):
 
     def test_default_route(self):
         result = self.client().get('/')
-        dataCheck = json.loads(result.data)
+        print(result.__dict__)
         self.assertEqual(result.status_code, 200)
+
+        dataCheck = json.loads(result.data)
         self.assertTrue('status' in dataCheck)
         
 
