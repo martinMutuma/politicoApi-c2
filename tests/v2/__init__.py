@@ -52,4 +52,4 @@ class BaseTest(unittest.TestCase):
 
     def tearDown(self):
         pass
-        db.drop()
+        # db.drop()
