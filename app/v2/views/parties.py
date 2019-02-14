@@ -10,12 +10,13 @@ partiesList = []
 
 
 class Parties(Views):
-    @auth.require_auth
+    # @auth.require_auth
     @classmethod
     def post_party(cls):
         """ Party data """
         data = Views.get_data()
         required_fields = ['name', 'hqAddress', 'logoUrl']
+
         cls.check_for_required_fields(fields=required_fields, dataDict=data)
         cls.validate_party_name_logo_url(data['name'], data['logoUrl'])
         validateAddressLen = Validate.validate_length(data['hqAddress'], 5)

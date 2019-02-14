@@ -1,4 +1,4 @@
-
+import hashlib
 from flask import request, make_response, jsonify, abort
 from app.v2.models.user_model import UserModel
 from app.v2.views import Views
@@ -47,15 +47,16 @@ def signup():
         return make_response(res, 400)
 
     save_data = user.clean_insert_dict(data,  full=False)
-
+    save_data['password'] = hash_password(save_data['password'])
     user.insert(save_data)
     returnUserDetails = user.sub_set()
     token = ''
     if user.id is not None:
         token = jwt_encode(returnUserDetails)
-    res = jsonify(
-        {"status": 201, 'data': {'user': returnUserDetails, 'token': token}})
-    return make_response(res, 201)
+        res = jsonify(
+            {"status": 201, 'data': {'user': returnUserDetails, 'token': token}})
+        return make_response(res, 201)
+    return make_response(jsonify({"Error": 'Something went wrong', 'status': 500}), 500)
 
 
 def login():
@@ -64,12 +65,18 @@ def login():
     Views.check_for_required_fields(
         fields=['email', 'password'], dataDict=data)
 
-    # do validation here
-    payload = {'email': data['email'], 'id': 2323, 'isadmin': True}
-    token = jwt_encode(payload)
-    res = {'data': {'token': token.decode(), 'user': payload
-                    },
-           'status': 200}
+    user = UserModel()
+    user.where(dict(email=data['email']))
+    if user.check_exist() == True and user.id is not None:
+        hashpassword = hash_password(data['password'])
+        if user.password == hashpassword:
+            payload = user.sub_set()
+            token = jwt_encode(payload)
+            res = {'data': {'token': token, 'user': payload
+                            },
+                'status': 200}
+            return make_response(jsonify(res), res['status'])
+    res = {'error':"Login error, Please check your datails", 'status':400}
     return make_response(jsonify(res), res['status'])
 
 
@@ -114,3 +121,8 @@ def require_auth(func):
 @require_auth
 def test():
     return make_response(jsonify({"Mesaage": "This was validated"}), 200)
+
+
+def hash_password(password):
+    hash_object = hashlib.md5(password.encode())
+    return hash_object.hexdigest()
