@@ -22,8 +22,10 @@ def create_app(config='development'):
     app.register_blueprint(v1_app, url_prefix='/api/v1')
     app.register_blueprint(v2_app, url_prefix='/api/v2')
 
-  
+   
+    
     db = DbSetup(config)
+    # db.drop()
     db.create_tables()
     # db.drop()
     return app
