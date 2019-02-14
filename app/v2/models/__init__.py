@@ -57,6 +57,9 @@ class BaseModel(object):
         Arguments:
             new_data_dict {dicti} -- {fieldname:value, fieldname:value}
         """
+        if len(new_data_dict)==0:
+            return False
+
         columns = ",".join(new_data_dict.keys())
         formated = []
         for x in new_data_dict.values():
