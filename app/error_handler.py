@@ -1,8 +1,6 @@
-"""run.py the main file to run the app"""
 
+from flask import Flask, make_response, jsonify
 from app import create_app
-from instance.config import configs
-from flask import make_response, jsonify
 
 polApp = create_app('development')
 @polApp.route('/', methods=['GET'])
@@ -56,7 +54,3 @@ def method_not_allowed(*args):
         status=405
     ))
     return make_response(res, 405)
-
-
-if __name__ == "__main__":
-    polApp.run()
