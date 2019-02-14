@@ -36,23 +36,25 @@ table_create_sql = [
         );
     """,
     """CREATE TABLE IF NOT EXISTS candidates(
-            id SERIAL PRIMARY KEY,
+            id SERIAL,
             party_id INTEGER REFERENCES parties(id) ON DELETE CASCADE ,
             office_id INTEGER REFERENCES offices(id) ON DELETE CASCADE,
             user_id INTEGER REFERENCES users(id) ON DELETE CASCADE, 
             manifesto  TEXT ,
             createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            updatedAt  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            updatedAt  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            PRIMARY KEY (office_id, user_id)
         );
     """,
     """CREATE TABLE IF NOT EXISTS votes(
-             id SERIAL PRIMARY KEY,  
+             id SERIAL ,  
              office_id INTEGER REFERENCES offices(id),
              candidate_id INTEGER REFERENCES candidates(id) ,
              createdOn  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
              createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
              createdBy INTEGER REFERENCES users(id),
-            updatedAt  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            updatedAt  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            PRIMARY KEY (createdBy, office_id)
         );
     """,
     """CREATE TABLE IF NOT EXISTS petitions(

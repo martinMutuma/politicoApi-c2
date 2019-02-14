@@ -5,8 +5,7 @@ from app.v2.models import BaseModel
 class CandidateModel(BaseModel):
     """The Party Model"""
     table_name = "candidates"
-    sub_set_cols = ['id', 'office_id',
-                    'party_id', 'user_id']
+    sub_set_cols = ['id', 'office_id', 'user_id']
 
     def __init__(self):
         """Init Model"""
