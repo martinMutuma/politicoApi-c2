@@ -21,7 +21,8 @@ class BaseTest(unittest.TestCase):
         self.client = polApp.test_client
 
     def post(self, path, data={}):
-        result = self.client().post(path=path, data=data)
+        # result = self.client().post(path=path, data=data)
+        result = self.send_auth_request(path,'POST',data)
         return result
 
     def check_standard_reply(self, datacheck, status, error=False):
@@ -51,4 +52,4 @@ class BaseTest(unittest.TestCase):
 
     def tearDown(self):
         pass
-        # db.drop()
+        db.drop()
