@@ -9,6 +9,7 @@ from app.v2.views.offices import Offices
 from app.v2.views import  auth
 from app.v2.views  import candidates
 from app.v2.views  import votes
+from app.v2.views  import results
 
 from app.v2.views import Views
 
@@ -27,6 +28,8 @@ v2_app.add_url_rule('/offices',view_func=Offices.get_all_offices, methods=['GET'
 v2_app.add_url_rule('/offices/<int:office_id>',view_func=Offices.update_office_details, methods=['PATCH'])
 v2_app.add_url_rule('/offices/<int:office_id>',view_func=Offices.delete_office, methods=['DELETE'])
 v2_app.add_url_rule('/offices/<int:office_id>/register',view_func=candidates.register, methods=['POST'])
+#result route
+v2_app.add_url_rule('/offices/<int:office_id>/result',view_func=results.office_results, methods=['get'])
 
 #auth routes 
 v2_app.add_url_rule('/auth/login',view_func=auth.login, methods=['POST'])
