@@ -6,6 +6,7 @@ v2_app = Blueprint('api_v2', __name__)
 from app.v2.views.parties import Parties
 
 from app.v2.views.offices import Offices
+from app.v2.views.auth import *
 
 from app.v2.views import Views
 
@@ -23,6 +24,10 @@ v2_app.add_url_rule('/offices/<int:office_id>',view_func=Offices.get_details, me
 v2_app.add_url_rule('/offices',view_func=Offices.get_all_offices, methods=['GET'])
 v2_app.add_url_rule('/offices/<int:office_id>',view_func=Offices.update_office_details, methods=['PATCH'])
 v2_app.add_url_rule('/offices/<int:office_id>',view_func=Offices.delete_office, methods=['DELETE'])
+
+#auth routes 
+v2_app.add_url_rule('/auth/login',view_func=login, methods=['POST'])
+v2_app.add_url_rule('/auth',view_func=test, methods=['POST'])
 
 
 #Clear data 
