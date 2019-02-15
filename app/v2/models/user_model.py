@@ -9,7 +9,7 @@ class UserModel(BaseModel):
     """
     table_name = "users"
     sub_set_cols = ['id','email', 'firstname',
-                     'othername', 'lastname', 'phonenumber', 'passporturlstring']
+                     'othername', 'lastname', 'phonenumber', 'passporturlstring', 'isadmin']
     def __init__(self):
         super(UserModel, self).__init__()
 

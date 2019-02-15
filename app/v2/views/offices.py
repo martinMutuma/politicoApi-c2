@@ -5,12 +5,14 @@ from flask import request, make_response, jsonify, abort
 from app.v2.views.validate import Validate
 from app.v2.views import Views
 from app.v2.models.office_model import OfficeModel,  officeTypes
+from app.v2.views import auth
 
 officeList =[]
 class Offices(Views):
     """All Control for office Routes"""
-
+   
     @staticmethod
+    @auth.require_auth_admin
     def create_office():
         post_data = Views.get_data()
         
@@ -63,6 +65,7 @@ class Offices(Views):
         return False
 
     @staticmethod
+    @auth.require_auth
     def get_details(office_id):
         """ Gets the deails of a specific party
         
@@ -87,6 +90,7 @@ class Offices(Views):
         ))
 
     @classmethod
+    @auth.require_auth
     def get_all_offices(cls):
         """Lists all Offices"""
         office_model = OfficeModel()
@@ -96,6 +100,7 @@ class Offices(Views):
         return make_response(jsonify(res), res['status'])
 
     @classmethod
+    @auth.require_auth_admin
     def update_office_details(cls, office_id):
         """A Function that serves edit office endpoint 
 
@@ -123,11 +128,11 @@ class Offices(Views):
         return make_response(res, 404)
 
     @classmethod
+    @auth.require_auth_admin
     def delete_office(cls, office_id):
         """Delete office from list of offices"""
         office= OfficeModel()
         exist = office.get_one(office_id)
-        print(exist);
         if exist is not None:
             office.delete(office_id)
             
