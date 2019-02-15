@@ -5,8 +5,9 @@ from app.v2.models.office_model import OfficeModel
 from app.v2.models.party_model import PartyModel
 from app.v2.views import Views
 from app.v2.views.validate import Validate
+from app.v2.views import auth
 
-
+@auth.require_auth_admin
 def register(office_id):
     """Registeres a candidate into the system"""
     data = Views.get_data()

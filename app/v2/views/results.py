@@ -3,6 +3,9 @@ from app.v2.models.vote_model import VoteModel
 from app.v2.views import Views
 from app.v2.views.validate import Validate
 
+from app.v2.views import auth
+
+@auth.require_auth
 def office_results(office_id):
 
     votes_model = VoteModel()

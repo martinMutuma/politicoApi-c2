@@ -10,8 +10,10 @@ partiesList = []
 
 
 class Parties(Views):
-    # @auth.require_auth
+
+    
     @classmethod
+    @auth.require_auth_admin
     def post_party(cls):
         """ Party data """
         data = Views.get_data()
@@ -34,6 +36,7 @@ class Parties(Views):
         return make_response(res, 201)
 
     @classmethod
+    @auth.require_auth
     def get_party_details(cls, partyId):
         """Get the details of a specific party"""
         party = PartyModel()
@@ -48,6 +51,7 @@ class Parties(Views):
         return make_response(res, 404)
 
     @classmethod
+    @auth.require_auth
     def get_all_parties(cls):
         """Lists all parties"""
         party_model = PartyModel()
@@ -60,6 +64,7 @@ class Parties(Views):
         return make_response(res, 200)
 
     @classmethod
+    @auth.require_auth_admin
     def update_party_details(cls, partyId):
         """update party details (impremented name update only)
 
@@ -87,6 +92,7 @@ class Parties(Views):
         return make_response(jsonify(res), res['status'])
 
     @classmethod
+    @auth.require_auth
     def delete_party(cls, partyId):
         """Delete Party from list of Parties"""
         party = PartyModel()

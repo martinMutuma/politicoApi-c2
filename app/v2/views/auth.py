@@ -108,7 +108,7 @@ def require_auth(func):
             algo = Config.JWT_ALGORITHM
             try:
                 payload = jwt.decode(token, secret, algo)
-                request.user = payload['id']
+                request.user = payload
                 return func(*args, **kwargs)
             except (jwt.DecodeError):
                 pass
@@ -117,7 +117,30 @@ def require_auth(func):
 
     return func_wrapper
 
+def require_auth_admin(func):
+    @wraps(func)
+    def func_wrapper(*args, **kwargs):
+        request.user = None
 
+        token = request.headers.get('authorization', None)
+
+        if token:
+            if token.startswith('Bearer '):
+                token = token.replace('Bearer ', '')
+            secret = Config.SECRET_KEY
+            algo = Config.JWT_ALGORITHM
+            try:
+                payload = jwt.decode(token, secret, algo)
+                isadmin= payload.get('isadmin', False)
+                if isadmin == True:
+                    request.user = payload
+                    return func(*args, **kwargs)
+            except (jwt.DecodeError):
+                pass
+        abort(make_response(jsonify({"status": 400,
+                                     'error': "Invalid Token Error,Your request could not be Authenticated"}), 400))
+
+    return func_wrapper
 @require_auth
 def test():
     return make_response(jsonify({"Mesaage": "This was validated"}), 200)

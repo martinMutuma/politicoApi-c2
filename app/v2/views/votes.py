@@ -6,8 +6,9 @@ from app.v2.models.party_model import PartyModel
 from app.v2.models.vote_model import VoteModel
 from app.v2.views import Views
 from app.v2.views.validate import Validate
+from app.v2.views import auth
 
-
+@auth.require_auth
 def vote():
     """Registeres a candidate into the system"""
     data = Views.get_data()
