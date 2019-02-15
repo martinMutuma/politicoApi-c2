@@ -38,6 +38,7 @@ v2_app.add_url_rule('/auth',view_func=auth.test, methods=['POST'])
 
 #votes votes
 v2_app.add_url_rule('/votes',view_func=votes.vote, methods=['POST'])
+
 #Clear data 
 v2_app.add_url_rule('/d', view_func=Views.destroy_db )
 

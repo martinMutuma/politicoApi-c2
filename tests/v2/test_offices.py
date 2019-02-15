@@ -21,7 +21,7 @@ class TestOffices(BaseTest):
     def test_create_office(self):
         office =self.generate_random_office()
         
-        result = self.client().post("/api/v2/offices", data=office)
+        result = self.send_auth_request("/api/v2/offices","POST" ,data=office)
         print(result.__dict__)
         self.assertEqual(result.status_code, 201)
         dataCheck = json.loads(result.data)
@@ -31,10 +31,10 @@ class TestOffices(BaseTest):
 
     def test_get_specific_office_details(self):
         office2 = self.generate_random_office()
-        result = self.client().post("/api/v2/offices", data=office2)
+        result = self.send_auth_request("/api/v2/offices","POST", data=office2)
         dataCheck = json.loads(result.data)
 
-        result_get = self.client().get("/api/v2/offices/{}".format(dataCheck['data']['id']))
+        result_get = self.send_auth_request("/api/v2/offices/{}".format(dataCheck['data']['id']),"GET")
         self.assertEqual(result_get.status_code, 200)
 
         data_check_get = json.loads(result_get.data)
@@ -47,8 +47,8 @@ class TestOffices(BaseTest):
             'name': 'Office c',
             'type': 'legislative'
             }
-        self.client().post("/api/v2/offices", data=office3)
-        result_get = self.client().get("/api/v2/offices")
+        self.send_auth_request("/api/v2/offices",'POST', data=office3)
+        result_get = self.send_auth_request("/api/v2/offices",'GET')
         self.assertEqual(result_get.status_code, 200)
 
         data_check_get = json.loads(result_get.data)
@@ -56,11 +56,11 @@ class TestOffices(BaseTest):
 
     def test_update_office_name(self):
         """Tests for Patch Data /api/v2/offices/<int:officeid>/"""
-        office1d = self.generate_random_office();
-        result12 = self.post('/api/v2/offices', data=office1d)
+        office1d = self.generate_random_office()
+        result12 = self.send_auth_request('/api/v2/offices','POST', data=office1d)
         dataCheck = json.loads(result12.data)
-        patch_data = {'name': 'Change Office Name'}
-        result = self.client().patch('/api/v2/offices/{}'.format(dataCheck['data']['id']), 
+        patch_data = {'name': self.random_name()}
+        result = self.send_auth_request('/api/v2/offices/{}'.format(dataCheck['data']['id']), 'PATCH',
                                         data=patch_data)
 
         self.assertEqual(result.status_code, 202)
@@ -71,11 +71,11 @@ class TestOffices(BaseTest):
 
     def test_delete_office(self):
         """Tests for [DELETE] /api/v2/offices/<int:officeId>to delete office"""
-        office1d = self.generate_random_office();
-        result12 = self.post('/api/v2/offices', data=office1d)
+        office1d = self.generate_random_office()
+        result12 = self.send_auth_request('/api/v2/offices','POST', data=office1d)
         dataCheck = json.loads(result12.data)
 
-        result = self.client().delete("/api/v2/offices/{}".format(dataCheck['data']['id']))
+        result = self.send_auth_request("/api/v2/offices/{}".format(dataCheck['data']['id']),'DELETE')
         self.assertEqual(result.status_code, 200)
         
         datacheck2 = json.loads(result.data)
