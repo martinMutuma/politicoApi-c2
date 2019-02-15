@@ -44,8 +44,7 @@ class BaseTest(unittest.TestCase):
         return self.client().open(Url,
                            method=method,
                            headers={
-                               'Authorization': 'Bearer  eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NSwiZW1haWwiOiJlbWFpbDg2QG1haWwuY29tIiwicGFzc3dvcmQiOiJwYXNzd29yZCIsImZpcnN0bmFtZSI6Ik5hbWUiLCJvdGhlcm5hbWUiOiJPdGhlck5hbWUiLCJsYXN0bmFtZSI6IldlbGxuYW1lIiwicGhvbmVudW1iZXIiOiIwODkzMjkyOTkyIiwicGFzc3BvcnR1cmxzdHJpbmciOiJ3d3cudXJsLmNvbS8wNiJ9.whz57ZnywK1pCQTul3NIT2Ey4HvvlgF0-Z6qxUtlCPk',
-                               "Content-Type": "application/json"
+                               'Authorization': "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MywiZW1haWwiOiJhZG1pbkBtYWlsLmNvbSIsImZpcnN0bmFtZSI6Ik5hbWUiLCJvdGhlcm5hbWUiOiJPdGhlck5hbWUiLCJsYXN0bmFtZSI6IldlbGxuYW1lIiwicGhvbmVudW1iZXIiOiIwODkzMjkyOTkyIiwicGFzc3BvcnR1cmxzdHJpbmciOiJ3d3cudXJsLmNvbS8xNiIsImlzYWRtaW4iOnRydWV9.Xow6qYFh8yrqQ-gwMEp4DLtpYZVW-KA2oRtugQr79XA",  "Content-Type": "application/json"
                            },
                            data=json.dumps(data)
                            )
@@ -53,3 +52,8 @@ class BaseTest(unittest.TestCase):
     def tearDown(self):
         pass
         # db.drop()
+
+    @classmethod
+    def tearDownClass(cls):
+        # pass
+        db.drop()

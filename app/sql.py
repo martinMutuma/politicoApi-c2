@@ -36,32 +36,32 @@ table_create_sql = [
         );
     """,
     """CREATE TABLE IF NOT EXISTS candidates(
-            id SERIAL,
-            party_id INTEGER REFERENCES parties(id) ON DELETE CASCADE ,
-            office_id INTEGER REFERENCES offices(id) ON DELETE CASCADE,
-            user_id INTEGER REFERENCES users(id) ON DELETE CASCADE, 
+            id SERIAL PRIMARY KEY,
+            party_id INTEGER REFERENCES parties(id) ON DELETE NO ACTION ,
+            office_id INTEGER REFERENCES offices(id) ON DELETE NO ACTION,
+            user_id INTEGER REFERENCES users(id) ON DELETE NO ACTION, 
             manifesto  TEXT ,
             createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             updatedAt  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            PRIMARY KEY (office_id, user_id)
+            UNIQUE(office_id, user_id)
         );
     """,
     """CREATE TABLE IF NOT EXISTS votes(
-             id SERIAL ,  
-             office_id INTEGER REFERENCES offices(id),
-             candidate_id INTEGER REFERENCES candidates(id) ,
+             id SERIAL PRIMARY KEY,  
+             office_id INTEGER REFERENCES offices(id) ON DELETE NO ACTION,
+             candidate_id INTEGER REFERENCES candidates(id) ON DELETE NO ACTION ,
              createdOn  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
              createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-             createdBy INTEGER REFERENCES users(id),
+             createdBy INTEGER REFERENCES users(id) ON DELETE NO ACTION,
             updatedAt  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            PRIMARY KEY (createdBy, office_id)
+            UNIQUE (createdBy, office_id)
         );
     """,
     """CREATE TABLE IF NOT EXISTS petitions(
              id SERIAL PRIMARY KEY,  
              createdOn TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-             createdBy   INTEGER REFERENCES users(id),
-             office_id  INTEGER REFERENCES offices(id),
+             createdBy   INTEGER REFERENCES users(id) ON DELETE NO ACTION,
+             office_id  INTEGER REFERENCES offices(id) ON DELETE NO ACTION,
              body TEXT NOT NULL
 
              );
@@ -77,3 +77,4 @@ drop_tables = """
             WHERE
                     schemaname='public';
             """
+drop_tables2 = '"DROP TABLE  users, offices,parties, candidates, votes, petitions"'

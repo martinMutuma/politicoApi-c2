@@ -47,7 +47,7 @@ def signup():
         return make_response(res, 400)
 
     save_data = user.clean_insert_dict(data,  full=False)
-    save_data['password'] = hash_password(save_data['password'])
+    save_data['password'] = hash_password(data['password'])
     user.insert(save_data)
     returnUserDetails = user.sub_set()
     token = ''
@@ -102,8 +102,9 @@ def require_auth(func):
         token = request.headers.get('authorization', None)
 
         if token:
-            if token.startswith('Bearer '):
-                token = token.replace('Bearer ', '')
+            if token.startswith('Bearer'):
+                token = token.replace('Bearer', '')
+                token = token.strip()
             secret = Config.SECRET_KEY
             algo = Config.JWT_ALGORITHM
             try:

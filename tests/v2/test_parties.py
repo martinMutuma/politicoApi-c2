@@ -51,7 +51,7 @@ class TestParties(BaseTest):
         """ api/v2/parties Post test with invalid data"""
         result = self.post('/api/v2/parties', data=self.party_short_name)
         dataCheck = json.loads(result.data)
-        result2 = self.client().post('/api/v2/parties', data=self.party_missing_data)
+        result2 = self.post('/api/v2/parties', data=self.party_missing_data)
         dataCheck2 = json.loads(result.data)
 
         self.assertEqual(result.status_code, 400)
@@ -70,8 +70,8 @@ class TestParties(BaseTest):
 
         result12 = self.post('/api/v2/parties', data=party1c)
         dataCheck = json.loads(result12.data)
-        resultGet1 = self.client().get(
-            "/api/v2/parties/{}".format(dataCheck['data']['id']))
+        resultGet1 = self.send_auth_request(
+            "/api/v2/parties/{}".format(dataCheck['data']['id']), 'GET')
         self.assertEqual(resultGet1.status_code, 200)
 
         dataCheckGet = json.loads(resultGet1.data)
@@ -82,7 +82,7 @@ class TestParties(BaseTest):
 
     def test_get_all_parties(self):
         """Test get parties"""
-        resultGet = self.client().get("/api/v2/parties/")
+        resultGet = self.send_auth_request("/api/v2/parties/", 'GET')
         self.assertEqual(resultGet.status_code, 200)
 
         dataCheckGet = json.loads(resultGet.data)
@@ -108,8 +108,8 @@ class TestParties(BaseTest):
         result12 = self.post('/api/v2/parties', data=party1c)
         dataCheck = json.loads(result12.data)
 
-        result = self.client().delete(
-            "/api/v2/parties/{}".format(dataCheck['data']['id']))
+        result = self.send_auth_request(
+            "/api/v2/parties/{}".format(dataCheck['data']['id']),'DELETE')
         self.assertEqual(result.status_code, 200)
 
         datacheck2 = json.loads(result.data)
