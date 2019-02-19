@@ -56,12 +56,14 @@ Political is impremented  using python data structures
         - export FLASK_APP=run.py
         - export FLASK_DEBUG=1
         - export FLASK_ENV=development
+        - export CONNECTION_STRING=dbname='political_test' user='postgres' host='localhost' password='your postgress pass' port='5432'
    ```
    ```bash  
         #windows
         - set FLASK_APP=run.py
         - set FLASK_DEBUG=1
         - set FLASK_ENV=development
+        - set CONNECTION_STRING=dbname='political_test' user='postgres' host='localhost' password='your postgress pass' port='5432'
    ```
 6. Manually Running tests
       ```
@@ -72,7 +74,19 @@ Political is impremented  using python data structures
          flask run
       ```
 
-app is available at [http://127.0.0.1:5000/](http://127.0.0.1:5000/)
+App is available at 
+
+1. [Localhost](http://127.0.0.1:5000/)
+
+2. [Heroku](https://mmmpolitical.herokuapp.com)
+
+Default admin 
+
+```
+     email: admin@mail.com
+     password:password
+```
+
 
 ##Political Endpoints
 
@@ -89,20 +103,26 @@ app is available at [http://127.0.0.1:5000/](http://127.0.0.1:5000/)
 
 ##Political v2 Endpoints
 
-| Method   | Endpoint                             | Description                                 |
-| -------- | ------------------------------------ | -------------------------------------       |
-| `POST`   | `/api/v2/parties`                    | Create a new party                          |
-| `GET`    | `/api/v2/parties`                    | View all parties                            |
-| `GET`    | `/api/v2/parties/<int:party_id>`      | Get party details by party Id               |
-| `PATCH`  | `/api/v2/parties/<int:party_id>/name` | Update a party  name                        |
-| `DELETE` | `/api/v2/parties/<int:party_id>`      | Delete a party by Id                        |
-| `GET`    | `/api/v2/offices`                    | View All offices                            |
-| `POST`   | `/api/v2/offices`                    | Post a new office                           |
-| `GET`    | `/api/v2/offices/<int:office_id>`    | Get a specific office                       |
+| Method   | Endpoint                                  | Description                                 |
+| -------- | ------------------------------------      | -------------------------------------       |
+| `POST`   | `/api/v2/parties`                         | Create a new party                          |
+| `GET`    | `/api/v2/parties`                         | View all parties                            |
+| `GET`    | `/api/v2/parties/<int:party_id>`          | Get party details by party Id               |
+| `PATCH`  | `/api/v2/parties/<int:party_id>/name`     | Update a party  name                        |
+| `DELETE` | `/api/v2/parties/<int:party_id>`          | Delete a party by Id                        |
+| `GET`    | `/api/v2/offices`                         | View All offices                            |
+| `POST`   | `/api/v2/offices`                         | Post a new office                           |
+| `GET`    | `/api/v2/offices/<int:office_id>`         | Get a specific office                       |
+| `POST`   | `/api/v2/auth/signup`                     | Create User                                 |
+| `POST`   | `/api/v2/auth/login`                      | Login to system                             |
+| `POST`   | `/api/v2/offices/<int:office_id>/register`| Register candidate                          |
+| `POST`   | `/api/v2/offices/vote`                    | Cast vote                                   |
+| `GET`    | `/api/v2/offices/<int:office_id>/result`  | Get specific office results               |
 
 ## Project managemnt 
 [Pivotal Tracker](https://www.pivotaltracker.com/n/projects/2241695)
 
 ## Project documentation and endpoint Manual test
 
-## [Api v2 Documentation](https://political.docs.apiary.io/)
+### [Api v2 Documentation on Apiary](https://political.docs.apiary.io/)
+### [Api V2 Documentation on Postman](https://documenter.getpostman.com/view/3383651/S11BzhxS)

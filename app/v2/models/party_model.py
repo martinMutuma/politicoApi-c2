@@ -2,12 +2,11 @@
 from app.v2.models import BaseModel
 
 
-
-
 class PartyModel(BaseModel):
     """The Party Model"""
     table_name = "parties"
-    sub_set_cols = ['id','name', 'hqAddress', 'logoUrl']
+    sub_set_cols = ['id', 'name', 'hqAddress', 'logoUrl']
+
     def __init__(self):
         """Party create
         Arguments:
@@ -29,8 +28,3 @@ class PartyModel(BaseModel):
         self.name = name
         self.hqAddress = hqAddress
         self.logoUrl = logoUrl
-       
-
-
-    
-

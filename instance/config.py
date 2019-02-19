@@ -8,7 +8,6 @@ class Config:
     FLASK_DEBUG = 0
     SECRET_KEY = "You can do this man"
     JWT_ALGORITHM = 'HS256'
-    # CONNECTION_STRING = "dbname='political' user='postgres' host='localhost' password='admin' port='5432'"
     CONNECTION_STRING = os.environ["CONNECTION_STRING"]
 
 
@@ -19,17 +18,19 @@ class DevelopmentConfig(Config):
     DEBUG = True
 
 
-
 class TestConfig(Config):
     os.environ["FLASK_ENV"] = 'testing'
-    # os.environ["CONNECTION_STRING"] = 'testing' "dbname='political_test' user='postgres' host='localhost' password='admin' port='5432'"
     FLASK_DEBUG = 1
     DEBUG = True
     TESTING = True
     CONNECTION_STRING = os.environ["CONNECTION_STRING"]
-  
+
+
 configs = dict(
-    testing = TestConfig,
+    testing=TestConfig,
     production=Config,
     development=DevelopmentConfig
 )
+default_admin = dict(firstname='Admin', lastname="Default",
+                     email='admin@mail.com', password='password', isAdmin=True,
+                     passporturlstring='www.urladmon.com')

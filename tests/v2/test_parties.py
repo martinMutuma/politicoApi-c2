@@ -94,11 +94,9 @@ class TestParties(BaseTest):
         result12 = self.post('/api/v2/parties', data=party1c)
         dataCheck = json.loads(result12.data)
         patch_data = self.gen_party()
-        result = self.send_auth_request('/api/v2/parties/{}'.format(dataCheck['data']['id']), 'PATCH',
-                                        data=patch_data)
-
+        url = '/api/v2/parties/{}'.format(dataCheck['data']['id'])
+        result = self.send_auth_request(url, 'PATCH', data=patch_data)
         self.assertEqual(result.status_code, 202)
-
         datacheck = json.loads(result.data)
         self.check_standard_reply(datacheck, 202)
 
@@ -109,7 +107,7 @@ class TestParties(BaseTest):
         dataCheck = json.loads(result12.data)
 
         result = self.send_auth_request(
-            "/api/v2/parties/{}".format(dataCheck['data']['id']),'DELETE')
+            "/api/v2/parties/{}".format(dataCheck['data']['id']), 'DELETE')
         self.assertEqual(result.status_code, 200)
 
         datacheck2 = json.loads(result.data)

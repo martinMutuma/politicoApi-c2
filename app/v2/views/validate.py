@@ -8,17 +8,21 @@ special_chars = r'[0-9~!@#$%^&*()_-`{};:\'"\|/?.>,<]'
 
 
 class Validate:
-
+    errors = []
     @classmethod
     def required(cls, fields=[], dataDict={}):
         """Checks for a missing submit from a list of required"""
         notFound = []
         if len(fields) > 0:
             notFound = [
-                i for i in fields if i not in dataDict or len(dataDict[i]) < 1]
+                i for i in fields
+                if i not in dataDict or len(str(dataDict[i])) < 1
+            ]
 
         if (len(notFound) > 0):
-            return cls.make_retun_dict(False, "Validation error,Following fields are required: {}".format(", ".join(notFound)))
+            msg = "Validation error,Following fields are required: {}".format(
+                ", ".join(notFound))
+            return cls.make_retun_dict(False, msg)
 
         else:
             return cls.make_retun_dict(True)
@@ -31,15 +35,19 @@ class Validate:
         name = name.strip()
         print(name)
         if bool(re.search(special_chars, name))is True:
-            return cls.make_retun_dict(False, "Name Should not contain special characters")
+            msg = "Name Should not contain special characters"
+            return cls.make_retun_dict(False, msg)
         elif len(name) <= 3:
-            return cls.make_retun_dict(False, "Name should be 4  characters and above")
+            msg2 = "Name should be 4  characters and above"
+            return cls.make_retun_dict(False, msg2)
         else:
             return cls.make_retun_dict(True)
 
     @classmethod
     def make_retun_dict(cls, status, message=''):
-        "Universal return dictionary for whole validation class {message:message , status:status}"
+        """Universal return dictionary for whole
+        validation class {message:message , status:status
+        """
         return dict(message=message, status=status)
 
     @classmethod
@@ -47,14 +55,15 @@ class Validate:
         """Validates lenght of a string"""
 
         if len(name) <= lenth:
-            return cls.make_retun_dict(False, "Should be longer than {}".format(str(lenth)))
+            msg = "Should be longer than {}".format(str(lenth))
+            return cls.make_retun_dict(False, msg)
         return cls.make_retun_dict(True)
 
     @classmethod
     def validate_url(cls, Url):
         """
-        To validate urls 
-        Takes url as the parameter 
+        To validate urls
+        Takes url as the parameter
 
         """
         try:
@@ -63,14 +72,14 @@ class Validate:
                 return cls.make_retun_dict(True)
             else:
                 return cls.make_retun_dict(False, "Must be a valid Url")
-        except:
+        except Exception as e:
+            cls.errors.append(e)
             return cls.make_retun_dict(False, "Must be a valid Url")
 
     @classmethod
     def validate_email(cls, mail):
+        """Validate Email"""
         pattern = r"\"?([-a-zA-Z0-9.`?{}]+@\w+\.\w+)\"?"
         if not re.match(pattern, mail):
             return cls.make_retun_dict(False, "Invalid Email")
         return cls.make_retun_dict(True, "Valid Email")
-
-    
