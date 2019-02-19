@@ -11,7 +11,6 @@ db = DbSetup(config)
 class BaseModel(object):
     """Base model to host querry builders for the rest of the models
     """
-
     connection = db.get_connection()
     cursor = db.get_cursor()
     table_name = None
@@ -24,9 +23,7 @@ class BaseModel(object):
 
     def __init__(self):
         """ Model instance
-
-        Arguments:
-            table {[string]} -- [name of the table]
+        Arguments: table {[string]} -- [name of the table]
         """
         self.select_query = """SELECT * FROM {}""".format(self.table_name)
         self.where_clause = ''
@@ -36,12 +33,10 @@ class BaseModel(object):
 
     def select(self, fields=[]):
         """Builds the select part of the query
-
         Keyword Arguments:
             fields {str} -- [fields to select] (default: {"*"})
             fields {List} -- [fields to select])
         """
-
         if len(fields) > 0:
             formated_fields = ",".join(fields)
             self.select_query = """SELECT {} FROM {}""".format(
@@ -52,21 +47,17 @@ class BaseModel(object):
 
     def insert(self, new_data_dict):
         """Compiles the insert statement
-
-        Arguments:
-            new_data_dict {dicti} -- {fieldname:value, fieldname:value}
+        Arguments: new_data_dict {dicti} -- {fieldname:value, fieldname:value}
         """
         print(new_data_dict)
         if len(new_data_dict) == 0:
             return False
-
         columns = ",".join(new_data_dict.keys())
         formated = []
         for x in new_data_dict.values():
             val = "'{}'".format(x)
             formated.append(val)
         set_values = ",".join(formated)
-
         query = "INSERT INTO {} ({}) VALUES({}) RETURNING {};".format(
             self.table_name, columns, set_values, ','.join(self.sub_set_cols))
 
@@ -82,9 +73,7 @@ class BaseModel(object):
 
     def update(self, data_update_dict, pry_key):
         """Compiles the Update querr
-
-        Arguments:
-            data_update_dict {[type]} -- [description]
+        Arguments: data_update_dict {[type]} -- [description]
         """
         set_part = ''
         count = 0
@@ -95,7 +84,6 @@ class BaseModel(object):
                 set_part += " {}='{}'".format(key, value)
             else:
                 set_part += " {}='{}',".format(key, value)
-
         self.where({self.primary_key: pry_key})
         query = "UPDATE {} SET {} ".format(self.table_name, set_part)
         query += self.where_clause
@@ -114,16 +102,14 @@ class BaseModel(object):
 
     def where(self, where_dict, operator="AND"):
         """sets the where clause for select,delete and update queries
-
-        Arguments:
-            whereDict {[dict()]} -- [fieldname:value, fieldname !=: value,
+            Arguments:whereDict {[dict()]} -- [fieldname:value,
+             fieldname !=: value,
              fieldname >=: value ]
         """
         special_chars = r'[><=!]'
         clause = ""
         if "WHERE" not in self.where_clause:
             clause = "WHERE "
-
         count = 0
         if bool(re.search(special_chars, self.where_clause)) is True:
             count = 2
@@ -132,7 +118,6 @@ class BaseModel(object):
             comparison = '='
             if bool(re.search(special_chars, key)) is True:
                 comparison = ''
-
             if count == 1:
                 clause += " {}{}'{}'".format(key, comparison, value)
             else:
@@ -147,7 +132,6 @@ class BaseModel(object):
         query = self.compile_select()
         self.execute_query(query)
         self.where_clause = ''
-
         if single is True:
             try:
                 result = self.cursor.fetchone()
@@ -157,7 +141,6 @@ class BaseModel(object):
             except psycopg2.ProgrammingError as errorx:
                 result = None
                 print(errorx)
-
         elif type(number) == int:
             result = self.cursor.fetchmany(number)
         else:
@@ -166,10 +149,8 @@ class BaseModel(object):
 
     def get_one(self, id):
         """Creates self variables with data from db  """
-
         self.where({self.primary_key: id})
         query = self.compile_select()
-
         self.execute_query(query)
         self.where_clause = ''
         try:
@@ -180,13 +161,11 @@ class BaseModel(object):
         except psycopg2.ProgrammingError as errorx:
             result = None
             print(errorx)
-
         return result
 
     def compile_select(self):
         """compiles the select querry
         """
-
         if self.select_query:
             query = self.select_query
         else:
@@ -199,9 +178,7 @@ class BaseModel(object):
 
     def execute_query(self, query, commit=False):
         """To central place to do query execution
-
-        Arguments:
-            query {[str]} -- [compild query]
+        Arguments: query {[str]} -- [compild query]
         """
         try:
             self.cursor.execute(query)
@@ -221,12 +198,9 @@ class BaseModel(object):
 
     def clean_insert_dict(self, dynamic_dict={}, full=True):
         """cleans a dictionaly according using table column names
-
         Keyword Arguments:
             dynamic_dict {dict} -- [description] (default: {{}})
-
-        Returns:
-            [dict] -- [with insertable colums]
+        Returns: [dict] -- [with insertable colums]
         """
         query = "SELECT * FROM {} limit 1".format(self.table_name)
         self.execute_query(query)
@@ -236,7 +210,6 @@ class BaseModel(object):
         clean_dict = {}
         if len(self.column_names) == 0:
             return dynamic_dict
-
         if full is True:
             for col in self.column_names:
                 clean_dict[col] = dynamic_dict.get(col, None)
@@ -245,17 +218,13 @@ class BaseModel(object):
                 key_l = key.lower()
                 if key_l in self.column_names:
                     clean_dict[key] = value
-
         return clean_dict
 
     def sub_set(self, list_to_get=None):
         """gets a dictinary with the fields in the list_to_get
-
         Keyword Arguments:
             list_to_get {list} -- [description] (default: {[]})
-
-        Returns:
-            [dict] -- [subset of self]
+        Returns: [dict] -- [subset of self]
         """
         if list_to_get is None:
             list_to_get = self.sub_set_cols
@@ -282,11 +251,9 @@ class BaseModel(object):
 
     def check_exist(self):
         """Check if a record exists
-
         Returns:
             [type] -- [description]
         """
-
         if self.where_clause != '' and self.get() is None:
             status = False
         else:
@@ -296,7 +263,6 @@ class BaseModel(object):
 
     def add_result_to_self(self, result={}):
         """Adds a dictionary to self as a valiable
-
         Keyword Arguments:
             result {dict} -- [description] (default: {{}})
         """
