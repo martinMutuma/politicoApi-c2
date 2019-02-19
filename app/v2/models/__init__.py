@@ -5,7 +5,6 @@ import psycopg2
 
 from app.db_setup import DbSetup
 config = os.getenv('FLASK_ENV', 'development')
-
 db = DbSetup(config)
 
 
@@ -101,7 +100,6 @@ class BaseModel(object):
         query = "UPDATE {} SET {} ".format(self.table_name, set_part)
         query += self.where_clause
         query += " RETURNING {}".format(','.join(self.sub_set_cols))
-        print(query)
         self.execute_query(query, True)
         try:
             result = self.cursor.fetchone()
@@ -205,7 +203,6 @@ class BaseModel(object):
         Arguments:
             query {[str]} -- [compild query]
         """
-
         try:
             self.cursor.execute(query)
             if config != 'production':
@@ -231,7 +228,6 @@ class BaseModel(object):
         Returns:
             [dict] -- [with insertable colums]
         """
-
         query = "SELECT * FROM {} limit 1".format(self.table_name)
         self.execute_query(query)
 
@@ -304,5 +300,4 @@ class BaseModel(object):
         Keyword Arguments:
             result {dict} -- [description] (default: {{}})
         """
-
         self.__dict__.update(result)

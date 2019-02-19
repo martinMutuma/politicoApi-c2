@@ -22,10 +22,9 @@ services:
  
 script:
    - python -m pytest  --cov=app
-   - coveralls
+  
 
 after_success:
-  - coveralls 
   - codeclimate -test-reporter
 
 
