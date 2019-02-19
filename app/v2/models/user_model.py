@@ -2,19 +2,21 @@ from app.v2.models import BaseModel
 
 
 class UserModel(BaseModel):
-    """User management 
+    """User management
 
     Arguments:
-        BaseModel --- Base class 
+        BaseModel --- Base class
     """
     table_name = "users"
-    sub_set_cols = ['id','email', 'firstname',
-                     'othername', 'lastname', 'phonenumber', 'passporturlstring', 'isadmin']
+    sub_set_cols = ['id', 'email', 'firstname',
+                    'othername', 'lastname', 'phonenumber',
+                    'passporturlstring', 'isadmin']
+
     def __init__(self):
         super(UserModel, self).__init__()
 
-    def create_user(self, user_dict={}):
-        """Creates a user 
+    def create_user(self, user_dict={}, isadmin=False):
+        """Creates a user
 
         Arguments:
             firstname {[type]} -- [description]
@@ -34,4 +36,4 @@ class UserModel(BaseModel):
         self.email = clean_user_dict['email']
         self.phonenumber = clean_user_dict['phonenumber']
         self.passporturlstring = clean_user_dict['passporturlstring']
-        self.isadmin = False
+        self.isadmin = isadmin

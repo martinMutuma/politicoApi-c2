@@ -1,7 +1,6 @@
 """run.py the main file to run the app"""
 
 from app import create_app
-from instance.config import configs
 from flask import make_response, jsonify
 
 polApp = create_app('development')
@@ -21,7 +20,7 @@ def home():
 
 @polApp.errorhandler(404)
 def endpoint_not_found(*args):
-    """Handles all error 404 responses 
+    """Handles all error 404 responses
         For compliance with API endpoint standard replies n]
     """
 

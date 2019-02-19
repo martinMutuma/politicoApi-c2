@@ -74,11 +74,18 @@ Political is impremented  using python data structures
          flask run
       ```
 
-app is available at 
+App is available at 
 
 1. [Localhost](http://127.0.0.1:5000/)
 
 2. [Heroku](https://mmmpolitical.herokuapp.com)
+
+Default admin 
+
+```
+     email: admin@mail.com
+     password:password
+```
 
 
 ##Political Endpoints
@@ -110,7 +117,7 @@ app is available at
 | `POST`   | `/api/v2/auth/login`                      | Login to system                             |
 | `POST`   | `/api/v2/offices/<int:office_id>/register`| Register candidate                          |
 | `POST`   | `/api/v2/offices/vote`                    | Cast vote                                   |
-| `GET`    | `/api/v2/offices/<int:office_id>/result`  | Get a specific office results               |
+| `GET`    | `/api/v2/offices/<int:office_id>/result`  | Get specific office results               |
 
 ## Project managemnt 
 [Pivotal Tracker](https://www.pivotaltracker.com/n/projects/2241695)

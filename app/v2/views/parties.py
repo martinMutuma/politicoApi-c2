@@ -1,6 +1,5 @@
 """app/v1/views/parties.py """
-import copy
-from flask import request, make_response, jsonify, abort
+from flask import make_response, jsonify, abort
 from app.v2.views.validate import Validate
 from app.v2.views import Views
 from app.v2.models.party_model import PartyModel
@@ -11,7 +10,6 @@ partiesList = []
 
 class Parties(Views):
 
-    
     @classmethod
     @auth.require_auth_admin
     def post_party(cls):
@@ -22,7 +20,7 @@ class Parties(Views):
         cls.check_for_required_fields(fields=required_fields, dataDict=data)
         cls.validate_party_name_logo_url(data['name'], data['logoUrl'])
         validateAddressLen = Validate.validate_length(data['hqAddress'], 5)
-        if validateAddressLen['status'] == False:
+        if validateAddressLen['status'] is False:
             res = jsonify({'status': 400, 'error': "hqAddress " +
                            validateAddressLen['message'], 'data': []})
             return make_response(res, 400)
@@ -45,9 +43,9 @@ class Parties(Views):
             returnPartydetails = party.sub_set()
             res = jsonify({"status": 200, 'data': returnPartydetails})
             return make_response(res, 200)
-
+        msg = "Party with id {} not found".format(partyId)
         res = jsonify(
-            {"status": 404, 'error': "Party with id {} not found".format(partyId)})
+            {"status": 404, 'error': msg})
         return make_response(res, 404)
 
     @classmethod
@@ -87,8 +85,9 @@ class Parties(Views):
             print(party.__dict__)
             res = {"status": 202, "data": party.sub_set()}
         else:
+            msg = "Party with id {} not found".format(partyId)
             res = jsonify(
-                {"status": 404, 'error': "Party with id {} not found".format(partyId)})
+                {"status": 404, 'error': msg})
         return make_response(jsonify(res), res['status'])
 
     @classmethod
@@ -104,23 +103,24 @@ class Parties(Views):
                 'data': {'message': "Party {} deleted".format(party.name)}
             }
             return make_response(jsonify(res), 200)
-
+        msg = "Party with id {} not found".format(partyId)
         res = jsonify(
-            {"status": 404, 'error': "Party with id {} not found".format(partyId)})
+            {"status": 404, 'error': msg})
         return make_response(res, 404)
 
     @classmethod
     def validate_party_name_logo_url(cls, name, logoUrl=None):
         validateName = Validate.validate_name(name)
-        if validateName['status'] == False:
+        if validateName['status'] is False:
             res = jsonify(
                 {'status': 400, 'error': validateName['message'], 'data': []})
             abort(make_response(res, 400))
         party = PartyModel()
         party.where(dict(name=name))
         if party.check_exist() is True:
-            res = jsonify({'status': 400, 'error': "Duplicate name error, Party {} already exists with id {}".format(
-                name, party.id), 'data': []})
+            msg = "Duplicate error, Party {} already exists with id {}".format(
+                name, party.id)
+            res = jsonify({'status': 400, 'error': msg, 'data': []})
             abort(make_response(res, 400))
 
         if logoUrl is not None:
@@ -128,7 +128,8 @@ class Parties(Views):
 
             party2.where(dict(logoUrl=logoUrl))
             if party2.check_exist() is True:
-                res = jsonify({'status': 400, 'error': "Duplicate logoUrl error, Party  {} already exists with logo {}".format(
-                    party2.name, logoUrl), 'data': []})
+                msg = "Party {} already exists with logo {}".format(
+                    party2.name, logoUrl)
+                res = jsonify({'status': 400, 'error': msg, 'data': []})
                 abort(make_response(res, 400))
         return True

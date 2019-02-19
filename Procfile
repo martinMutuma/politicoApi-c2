@@ -1,1 +1,1 @@
-web: gunicorn run:polApp
+web: gunicorn --no-sendfile run:polApp

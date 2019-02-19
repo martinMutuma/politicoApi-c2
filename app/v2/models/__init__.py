@@ -52,12 +52,13 @@ class BaseModel(object):
         return self
 
     def insert(self, new_data_dict):
-        """Compiles the insert statement 
+        """Compiles the insert statement
 
         Arguments:
             new_data_dict {dicti} -- {fieldname:value, fieldname:value}
         """
-        if len(new_data_dict)==0:
+        print(new_data_dict)
+        if len(new_data_dict) == 0:
             return False
 
         columns = ",".join(new_data_dict.keys())
@@ -68,7 +69,7 @@ class BaseModel(object):
         set_values = ",".join(formated)
 
         query = "INSERT INTO {} ({}) VALUES({}) RETURNING {};".format(
-            self.table_name, columns, set_values,','.join(self.sub_set_cols))
+            self.table_name, columns, set_values, ','.join(self.sub_set_cols))
 
         self.execute_query(query, True)
         try:
@@ -87,8 +88,14 @@ class BaseModel(object):
             data_update_dict {[type]} -- [description]
         """
         set_part = ''
+        count = 0
+        data_len = len(data_update_dict)
         for key, value in data_update_dict.items():
-            set_part += " {}='{}'".format(key, value)
+            count += 1
+            if count == data_len:
+                set_part += " {}='{}'".format(key, value)
+            else:
+                set_part += " {}='{}',".format(key, value)
 
         self.where({self.primary_key: pry_key})
         query = "UPDATE {} SET {} ".format(self.table_name, set_part)
@@ -106,13 +113,13 @@ class BaseModel(object):
             print(errorx)
         self.where_clause = ''
         return result
-        
 
     def where(self, where_dict, operator="AND"):
         """sets the where clause for select,delete and update queries
 
         Arguments:
-            whereDict {[dict()]} -- [fieldname:value, fieldname !=: value, fieldname >=: value ]
+            whereDict {[dict()]} -- [fieldname:value, fieldname !=: value,
+             fieldname >=: value ]
         """
         special_chars = r'[><=!]'
         clause = ""
@@ -201,7 +208,11 @@ class BaseModel(object):
 
         try:
             self.cursor.execute(query)
-            print(self.cursor.statusmessage)
+            if config != 'production':
+                print("========execute query=====")
+                print(self.cursor.statusmessage)
+                print(query)
+                print("========execute query end=====")
             if commit is True:
                 self.connection.commit()
             self.where_clause = ''
@@ -212,7 +223,7 @@ class BaseModel(object):
             return False
 
     def clean_insert_dict(self, dynamic_dict={}, full=True):
-        """cleans a dictionaly according using table column names 
+        """cleans a dictionaly according using table column names
 
         Keyword Arguments:
             dynamic_dict {dict} -- [description] (default: {{}})
@@ -221,11 +232,15 @@ class BaseModel(object):
             [dict] -- [with insertable colums]
         """
 
-        query = "SELECT * FROM {} WHERE false".format(self.table_name)
+        query = "SELECT * FROM {} limit 1".format(self.table_name)
         self.execute_query(query)
+
         if self.cursor.description is not None:
             self.column_names = [row[0]for row in self.cursor.description]
         clean_dict = {}
+        if len(self.column_names) == 0:
+            return dynamic_dict
+
         if full is True:
             for col in self.column_names:
                 clean_dict[col] = dynamic_dict.get(col, None)
@@ -248,7 +263,7 @@ class BaseModel(object):
         """
         if list_to_get is None:
             list_to_get = self.sub_set_cols
-        list_to_get = [x.lower() for x in list_to_get]    
+        list_to_get = [x.lower() for x in list_to_get]
 
         sub_set = dict.fromkeys(list_to_get, None)
         for key, value in self.__dict__.items():
@@ -270,18 +285,17 @@ class BaseModel(object):
         self.execute_query(query, True)
 
     def check_exist(self):
-        """Check if a record exists 
+        """Check if a record exists
 
         Returns:
             [type] -- [description]
         """
-        
 
-        if self.where_clause != '' and self.get() == None:
+        if self.where_clause != '' and self.get() is None:
             status = False
         else:
             status = True
-       
+
         return status
 
     def add_result_to_self(self, result={}):
