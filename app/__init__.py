@@ -2,9 +2,9 @@
 app/__init__.py
 """
 
-
+import os
 from flask import Flask
-from instance.config import configs, default_admin
+from instance.config import configs
 from app.v1 import v1_app
 from app.v2 import v2_app
 from app.db_setup import DbSetup
@@ -34,9 +34,7 @@ def create_app(config='development'):
     app.register_blueprint(v2_app, url_prefix='/api/v2')
 
     db = DbSetup(config)
-    # db.drop()
     db.create_tables()
-    # db.drop()
     create_default_admin()
     return app
 
@@ -47,8 +45,18 @@ def create_default_admin():
 
     user = None
     user = UserModel()
-    user.where(dict(email=default_admin['email']))
-    if user.check_exist() is not True:
-        save_data = user.clean_insert_dict(default_admin,  full=False)
-        save_data['password'] = hash_password(default_admin['password'])
-        user.insert(save_data)
+    email = os.getenv('ADMIN_EMAIL')
+    firstname = os.getenv('ADMIN_FIRST_NAME')
+    lastname = os.getenv('ADMIN_LAST_NAME')
+    password = os.getenv('ADMIN_PASSWORD')
+    passporturlstring = os.getenv('ADMIN_PASSPORT')
+    default_admin = dict(firstname=firstname, lastname=lastname,
+                         email=email, password=password, isAdmin=True,
+                         passporturlstring=passporturlstring)
+    if email is not None:
+        user.where(dict(email=default_admin['email']))
+        if user.check_exist() is not True:
+            save_data = user.clean_insert_dict(default_admin,  full=False)
+            save_data['password'] = hash_password(default_admin['password'])
+            user.insert(save_data)
+    

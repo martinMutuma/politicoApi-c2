@@ -189,3 +189,18 @@ def hash_password(password):
 
     hash_object = hashlib.md5(password.encode())
     return hash_object.hexdigest()
+
+
+@require_auth_admin
+def make_admin(user_id):
+    data = dict(isadmin=True)
+    user = UserModel()
+    user.where(dict(id=user_id))
+    if user.check_exist() is True and user.id is not None:
+        update_data = user.clean_insert_dict(data, False)
+        user.update(update_data, user_id)
+        res = {"status": 202, "data": user.sub_set()}
+    else:
+        msg = "User not found"
+        res = {"status": 404, 'error': msg}
+    return make_response(jsonify(res), res['status'])

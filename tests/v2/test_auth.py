@@ -12,6 +12,14 @@ class TestAuth(BaseTest):
         datacheck = json.loads(result.data)
         self.check_standard_reply(datacheck, 201)
 
+    def test_auth_signup_with_missing_data(self):
+        data = self.generate_user()
+        del data['email']
+        result = self.send_auth_request('/api/v2/auth/signup', 'POST', data)
+        self.assertEqual(result.status_code, 400)
+        datacheck = json.loads(result.data)
+        self.check_standard_reply(datacheck, 400, True)
+
     def test_auth_login(self):
         data = self.generate_user()
         result = self.send_auth_request('/api/v2/auth/signup', 'POST', data)
@@ -31,6 +39,14 @@ class TestAuth(BaseTest):
             '/api/v2/auth/login', 'POST', login_data)
         datacheck2 = json.loads(result2.data)
         self.check_standard_reply(datacheck2, 400, True)
+
+    def test_make_user_admin(self):
+        """Test Make user admin"""
+
+        resultGet = self.send_auth_request("/api/v2/auth/admin/5656", 'GET')
+        self.assertEqual(resultGet.status_code, 404)
+        dataCheckGet = json.loads(resultGet.data)
+        self.check_standard_reply(dataCheckGet, 200, True)
 
     def generate_user(self):
         return {

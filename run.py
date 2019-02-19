@@ -2,6 +2,8 @@
 
 from app import create_app
 from flask import make_response, jsonify
+from dotenv import load_dotenv
+load_dotenv()
 
 polApp = create_app('development')
 @polApp.route('/', methods=['GET'])

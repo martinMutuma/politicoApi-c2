@@ -72,12 +72,3 @@ class BaseTest(unittest.TestCase):
             'hqAddress': '23 jumpstreet',
             'logoUrl': 'www.url.com/ ' + BaseTest().random_name(10),
         }
-
-    def tearDown(self):
-        pass
-        # db.drop()
-
-    @classmethod
-    def tearDownClass(cls):
-        pass
-        # db.drop()

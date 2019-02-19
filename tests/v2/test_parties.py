@@ -80,6 +80,14 @@ class TestParties(BaseTest):
         self.assertEqual(dataCheckGet['data']
                          ['name'], dataCheck['data']['name'])
 
+    def test_get_party_details_party_not_exist(self):
+        resultGet1 = self.send_auth_request(
+            "/api/v2/parties/7676676898", 'GET')
+        self.assertEqual(resultGet1.status_code, 404)
+
+        dataCheckGet = json.loads(resultGet1.data)
+        self.check_standard_reply(dataCheckGet, 404, True)
+
     def test_get_all_parties(self):
         """Test get parties"""
         resultGet = self.send_auth_request("/api/v2/parties/", 'GET')

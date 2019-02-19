@@ -42,3 +42,20 @@ def register(office_id):
         return make_response(jsonify(dict(data=data, status=status)), status)
     res = {"error": "Could not create Candidate", 'status': 400}
     return make_response(jsonify(res), 400)
+
+
+@auth.require_auth
+def get_all_candidates():
+    """Get a list of all candidates
+    Returns:
+        [api response] -- [with all candidates]
+    """
+
+    candidate_model = CandidateModel()
+    select_cols = candidate_model.sub_set_cols
+    candidate_model.select(select_cols)
+    all_candidates = candidate_model.get(False)
+    res = jsonify({"status": 200,
+                   'data': all_candidates
+                   })
+    return make_response(res, 200)

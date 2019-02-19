@@ -60,7 +60,6 @@ class BaseModel(object):
         set_values = ",".join(formated)
         query = "INSERT INTO {} ({}) VALUES({}) RETURNING {};".format(
             self.table_name, columns, set_values, ','.join(self.sub_set_cols))
-
         self.execute_query(query, True)
         try:
             result = self.cursor.fetchone()
@@ -69,7 +68,7 @@ class BaseModel(object):
                 self.add_result_to_self(result)
         except psycopg2.ProgrammingError as errorx:
             result = None
-            print(errorx)
+            self.errors.append(errorx)
 
     def update(self, data_update_dict, pry_key):
         """Compiles the Update querr
@@ -191,9 +190,11 @@ class BaseModel(object):
                 self.connection.commit()
             self.where_clause = ''
         except psycopg2.Error as errorx:
+            print("exe===============exec===================", errorx)
             if config != 'production':
-                print(errorx)
+                pass
             self.errors.append("Error executing `{}`".format(query))
+            self.connection.rollback()
             return False
 
     def clean_insert_dict(self, dynamic_dict={}, full=True):
