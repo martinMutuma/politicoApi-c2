@@ -3,10 +3,18 @@
 from app import create_app
 from flask import make_response, jsonify
 from dotenv import load_dotenv
-load_dotenv()
+from flasgger import Swagger
 
+load_dotenv()
 polApp = create_app('development')
-@polApp.route('/', methods=['GET'])
+
+polApp.config['SWAGGER'] = {
+    'specs_route': '/',
+}
+Swagger(polApp, template_file='../api_docs.yaml')
+
+
+@polApp.route('/routes', methods=['GET'])
 def home():
     """Default Home route when you load the app"""
     routes = []

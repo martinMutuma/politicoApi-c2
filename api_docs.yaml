@@ -1,0 +1,442 @@
+openapi: 3.0.0
+servers:
+  - url: https://mmmpolitical.herokuapp.com/api/v2
+    description: Heroku hosted app
+  - url: http://127.0.0.1:5000/api/v2
+info:
+  description: |
+   This is a simple voting Api
+  version: v2
+  title: Political 
+paths:
+  /parties:
+    post:
+      summary: Post /api/v2/parties to create party
+      description: 'Create party'
+      operationId: CreateParty
+      parameters: []
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+             $ref: '#/components/schemas/createParty'
+          application/json:
+            schema:
+             $ref: '#/components/schemas/createParty'    
+        required: false
+      responses:
+        200:
+          description: ''
+          headers: {}
+    get:
+      summary: Get all parties
+      operationId: GetAllParties
+      parameters: []
+      responses:
+        200:
+          description: ''
+          headers: {}
+          
+  /parties/{party_id}:
+    get:
+      summary: Get specific party
+      operationId: GetSpecificParty
+      parameters:
+        - in: path
+          name: party_id
+          schema:
+            type: integer
+          required: true
+          description: ID of the party to get
+      responses:
+        200:
+          description: ''
+          headers: {}
+      deprecated: false
+    patch:
+      summary: 'update party details'
+      operationId: 'UpdatePartyDetails'
+      parameters:
+        - in: path
+          name: party_id
+          schema:
+            type: integer
+          required: true
+          description: ID of the party to edit
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              required:
+              - name
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: New party name
+        required: True
+      responses:
+        200:
+          description: ''
+    delete:
+      summary: Party Party by id'
+      operationId: deleteParty'
+      parameters:
+        - in: path
+          name: party_id
+          schema:
+            type: integer
+          required: true
+          description: ID of the party to delete
+      responses:
+        200:
+          description: ''
+          headers: {}
+      deprecated: false
+  /offices:
+    post:
+      summary: Create offfice
+      operationId: CreateOfffice
+      parameters:
+      - name: Content-Type
+        in: header
+        description: ''
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: application/json
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateoffficeRequest'
+            example: '{"name":"Office h","type":"state"}'
+        required: true
+      responses:
+        200:
+          description: ''
+          headers: {}
+      deprecated: false
+    get:
+      summary: Get all Offices
+      operationId: GetAllOffices
+      parameters: []
+      responses:
+        200:
+          description: ''
+          headers: {}
+      deprecated: false
+  /offices/{office_id}:
+    get:
+      summary: GET Office details by id
+      description: 'TODO: Add Description'
+      operationId: GetOfficeDetailsById
+      parameters:
+        - in: path
+          name: office_id
+          schema:
+            type: integer
+          required: true
+          description: ID of the office
+      responses:
+        200:
+          description: ''
+          headers: {}
+      deprecated: false
+    patch:
+      summary: 'Update Office details'
+      operationId: 'UpdateOfficeDetails'
+      parameters:
+      - name: Content-Type
+        in: header
+        description: ''
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: application/json
+      - in: path
+        name: office_id
+        schema:
+          type: integer
+        required: true
+        description: ID of the office to update
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              required:
+              - name
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: New Name
+        required: false
+      responses:
+        200:
+          description: ''
+          headers: {}
+      deprecated: false
+    delete:
+      summary: 'Delete Office'
+      operationId: 'DeleteOffice'
+      parameters:
+        - in: path
+          name: office_id
+          schema:
+            type: integer
+          required: true
+          description: ID of the office
+      responses:
+        200:
+          description: ''
+          headers: {}
+      deprecated: false
+  /auth/signup:
+    post:
+      summary: 'User sign up'
+      operationId: 'UserSignUp'
+      parameters:
+      - name: Content-Type
+        in: header
+        description: ''
+        required: False
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: application/json
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/usersignupRequest'
+            example: '{"email":"email86@mail.com","password":"password","firstname":"Name","othername":"OtherName","lastname":"Wellname","phonenumber":"0893292992","passporturlstring":"www.url.com/06"}'
+        required: true
+      responses:
+        201:
+          description: ''
+          headers: {}
+      deprecated: false
+  /auth/login:
+    post:
+      summary: 'Login'
+      operationId: 'Login'
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+            example: '{"email":"emailf@mail.com","password":"password"}'
+        required: true
+      responses:
+        200:
+          description: ''
+          headers: {}
+      deprecated: false
+  /offices/{office_id}/register:
+    post:
+      summary: 'Create candidate'
+      operationId: 'CreateCandidate'
+      parameters:
+      - name: Content-Type
+        in: header
+        description: ''
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: application/json
+      - in: path
+        name: office_id
+        schema:
+          type: integer
+        required: true
+        description: ID of the office
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createcandidateRequest'
+            example: '{"user_id":"1"}'
+        required: true
+      responses:
+        200:
+          description: ''
+          headers: {}
+      deprecated: false
+  /offices/{office_id}/result:
+    get:
+      summary: 'Get office results'
+      operationId: 'GetOfficeResults'
+      parameters:
+      - name: Content-Type
+        in: header
+        description: ''
+        required: False
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: application/json
+      - in: path
+        name: office_id
+        schema:
+          type: integer
+        required: true
+        description: ID of the office
+      responses:
+        200:
+          description: ''
+          headers: {}
+      deprecated: false
+  /votes:
+    post:
+      summary: 'Vote'
+      operationId: 'Vote'
+      parameters:
+      - name: Content-Type
+        in: header
+        description: ''
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: application/json
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VoteRequest'
+            example: '{"createdBy":"1","candidate_id":"1","office_id":"1"}'
+        required: true
+      responses:
+        201:
+          description: ''
+          headers: {}
+      deprecated: false
+components:
+  schemas:
+    createParty:
+      required:
+        - name
+        - logoUrl
+        - hqAddress
+      type: object
+      properties:
+        name:
+          type: string
+          example: weere ty y wrt
+        logoUrl:
+          type: string
+          example: http://www.stackoverfldow.com/787
+        hqAddress:
+          type: string
+          example: ewewewe
+    CreateoffficeRequest:
+      title: CreateoffficeRequest
+      required:
+      - name
+      - type
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+      example:
+        name: Office h
+        type: state
+    'usersignupRequest':
+      title: 'usersignupRequest'
+      required:
+      - email
+      - password
+      - firstname
+      - othername
+      - lastname
+      - phonenumber
+      - passporturlstring
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+        firstname:
+          type: string
+        othername:
+          type: string
+        lastname:
+          type: string
+        phonenumber:
+          type: string
+        passporturlstring:
+          type: string
+      example:
+        email: email86@mail.com
+        password: password
+        firstname: Name
+        othername: OtherName
+        lastname: Wellname
+        phonenumber: 0893292992
+        passporturlstring: www.url.com/06
+    'LoginRequest':
+      title: 'LoginRequest'
+      required:
+      - email
+      - password
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      example:
+        email: emailf@mail.com
+        password: password
+    'createcandidateRequest':
+      title: 'createcandidateRequest'
+      required:
+      - user_id
+      type: object
+      properties:
+        user_id:
+          type: string
+      example:
+        user_id: 1
+    'VoteRequest':
+      title: 'VoteRequest'
+      required:
+      - createdBy
+      - candidate_id
+      - office_id
+      type: object
+      properties:
+        candidate_id:
+          type: string
+        office_id:
+          type: string
+      example:
+        createdBy: 1
+        candidate_id: 1
+        office_id: 
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer      
+security:
+  - BearerAuth:
+    - read
+    - write
