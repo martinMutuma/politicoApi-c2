@@ -13,7 +13,7 @@ class Views(object):
             data = request.get_json()
         else:
             data = request.form.to_dict()
-
+        print(data)
         if not data:
             try:
                 data = request.get_json(force=True)
@@ -22,7 +22,7 @@ class Views(object):
                 Views.errors.append(e)
 
         for key, value in data.items():
-            if type(value) == str:
+            if isinstance(value, str):
                 data[key] = value.strip()
 
             data[key] = value
@@ -48,6 +48,6 @@ class Views(object):
         if validateRequired['status'] is False:
             msg = validateRequired['message']
             res = jsonify(
-                {'status': 400, 'error': msg, 'data': []})
+                {'status': 400, 'error': msg})
             return abort(make_response(res, 400))
         return True

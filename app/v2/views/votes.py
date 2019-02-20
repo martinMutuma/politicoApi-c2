@@ -2,6 +2,7 @@ from flask import make_response, jsonify, request
 from app.v2.models.candidate_model import CandidateModel
 from app.v2.models.user_model import UserModel
 from app.v2.models.vote_model import VoteModel
+from app.v2.models.office_model import OfficeModel
 from app.v2.views import Views
 from app.v2.views import auth
 
@@ -19,7 +20,9 @@ def vote():
     error_message = []
     if user.get_one(data['createdBy']) is None:
         error_message.append('User Does not exist')
-
+    office = OfficeModel()
+    if office.get_one(data['office_id']) is None:
+        error_message.append('Office Does not exist')
     candidate = CandidateModel()
     candidate.where({'office_id': data['office_id']})
     if candidate.get_one(data['candidate_id']) is None:

@@ -36,8 +36,8 @@ class Validate:
         if bool(re.search(special_chars, name))is True:
             msg = "Name Should not contain special characters"
             return cls.make_retun_dict(False, msg)
-        elif len(name) <= 3:
-            msg2 = "Name should be 4  characters and above"
+        elif len(name) <= 1:
+            msg2 = "Name should be atleast 2 characters"
             return cls.make_retun_dict(False, msg2)
         else:
             return cls.make_retun_dict(True)
@@ -50,11 +50,11 @@ class Validate:
         return dict(message=message, status=status)
 
     @classmethod
-    def validate_length(cls, name, lenth=3):
+    def validate_length(cls, name, lenth=1):
         """Validates lenght of a string"""
 
         if len(name) <= lenth:
-            msg = "Should be longer than {}".format(str(lenth))
+            msg = "Should be at least {} characters".format(str(lenth))
             return cls.make_retun_dict(False, msg)
         return cls.make_retun_dict(True)
 

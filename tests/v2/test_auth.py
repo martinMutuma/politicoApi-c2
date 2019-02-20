@@ -8,6 +8,7 @@ class TestAuth(BaseTest):
     def test_auth_signup(self):
         data = self.generate_user()
         result = self.send_auth_request('/api/v2/auth/signup', 'POST', data)
+        print(json.loads(result.data))
         self.assertEqual(result.status_code, 201)
         datacheck = json.loads(result.data)
         self.check_standard_reply(datacheck, 201)
@@ -55,6 +56,6 @@ class TestAuth(BaseTest):
             "firstname": "Name",
             "othername": "OtherName",
             "lastname": "Wellname",
-            "phonenumber": "0893292992",
+            "phonenumber": "0899993292992",
             "passporturlstring": "www.url.com/"+BaseTest.random_name(4)
         }

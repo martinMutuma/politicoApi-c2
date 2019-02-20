@@ -34,6 +34,9 @@ def create_app(config='development'):
     app.register_blueprint(v2_app, url_prefix='/api/v2')
 
     db = DbSetup(config)
+    flask_env = os.getenv('FLASK_ENV', None)
+    if (flask_env != 'production'):
+        db.drop()
     db.create_tables()
     create_default_admin()
     return app
@@ -59,4 +62,3 @@ def create_default_admin():
             save_data = user.clean_insert_dict(default_admin,  full=False)
             save_data['password'] = hash_password(default_admin['password'])
             user.insert(save_data)
-    
