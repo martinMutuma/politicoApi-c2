@@ -25,10 +25,10 @@ def register(office_id):
     if office.get_one(data['office_id']) is None:
         error_message.append('Office Does not exist')
     candidate = CandidateModel()
-    candidate.where(data)
+    candidate.where({'user_id': data['user_id']})
     candidate.get()
     if candidate.id is not None:
-        error_message.append('Candidate already exists')
+        error_message.append('User already a candidate')
 
     if len(error_message) != 0:
         res = jsonify({'error': ",".join(error_message), "status": 400})

@@ -181,18 +181,12 @@ class BaseModel(object):
         """
         try:
             self.cursor.execute(query)
-            if config != 'production':
-                print("========execute query=====")
-                print(self.cursor.statusmessage)
-                print(query)
-                print("========execute query end=====")
+         
             if commit is True:
                 self.connection.commit()
             self.where_clause = ''
         except psycopg2.Error as errorx:
-            print("exe===============exec===================", errorx)
-            if config != 'production':
-                pass
+            self.errors.append(errorx)
             self.errors.append("Error executing `{}`".format(query))
             self.connection.rollback()
             return False

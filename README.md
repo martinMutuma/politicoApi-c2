@@ -104,11 +104,13 @@ App is available at
 | `GET`    | `/api/v2/offices/<int:office_id>`         | Get a specific office                       |
 | `POST`   | `/api/v2/auth/signup`                     | Create User                                 |
 | `POST`   | `/api/v2/auth/login`                      | Login to system                             |
+| `GET`    | `/api/v2/auth/users`                      | List Users                                  |
 | `GET`    | `/api/v2/auth/admin/<int:user_id>`        | Make user an Admin                          |
 | `POST`   | `/api/v2/offices/<int:office_id>/register`| Register candidate                          |
 | `GET`    | `/api/v2/candidates`                      | Get all candidates                          |
 | `POST`   | `/api/v2/offices/vote`                    | Cast vote                                   |
 | `GET`    | `/api/v2/offices/<int:office_id>/result`  | Get specific office results                 |
+| `POST`    | `/api/v2/petitions`                      | Create Petition                             |
 
 ## Project managemnt 
 [Pivotal Tracker](https://www.pivotaltracker.com/n/projects/2241695)
