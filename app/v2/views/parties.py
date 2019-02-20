@@ -82,12 +82,10 @@ class Parties(Views):
         if party_exists is not None:
             update_data = party.clean_insert_dict(patch_data, False)
             party.update(update_data, partyId)
-            print(party.__dict__)
             res = {"status": 202, "data": party.sub_set()}
         else:
             msg = "Party with id {} not found".format(partyId)
-            res = jsonify(
-                {"status": 404, 'error': msg})
+            res = {"status": 404, 'error': msg}
         return make_response(jsonify(res), res['status'])
 
     @classmethod

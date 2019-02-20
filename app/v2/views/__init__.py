@@ -51,12 +51,3 @@ class Views(object):
                 {'status': 400, 'error': msg, 'data': []})
             return abort(make_response(res, 400))
         return True
-
-    @staticmethod
-    def destroy_db():
-        """
-        used by when testing incase one wants to
-        clean up the data and test a flesh
-
-        """
-        return make_response("Done", 200)

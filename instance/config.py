@@ -31,6 +31,3 @@ configs = dict(
     production=Config,
     development=DevelopmentConfig
 )
-default_admin = dict(firstname='Admin', lastname="Default",
-                     email='admin@mail.com', password='password', isAdmin=True,
-                     passporturlstring='www.urladmon.com')

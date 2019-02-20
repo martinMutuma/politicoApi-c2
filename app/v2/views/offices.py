@@ -97,7 +97,7 @@ class Offices(Views):
         return make_response(jsonify(
             {'status': 404,
                 "error": 'Office with id {} not found'.format(office_id)}
-        ))
+        ), 404)
 
     @classmethod
     @auth.require_auth

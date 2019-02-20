@@ -23,3 +23,19 @@ class TestCandidate(BaseTest):
             "/api/v2/offices/{}/register".format(office_id), "POST",
             data=candidate)
         self.assertEqual(resultC.status_code, 201)
+
+    def test_create_candidate_with_wrong_data(self):
+        user_id = 696994040004004
+        candidate = dict(user_id=str(user_id))
+        resultC = self.send_auth_request(
+            "/api/v2/offices/78996643345/register", "POST",
+            data=candidate)
+        self.assertEqual(resultC.status_code, 400)
+
+    def test_get_all_parties(self):
+        """Test get candidates"""
+        resultGet = self.send_auth_request("/api/v2/candidates", 'GET')
+        self.assertEqual(resultGet.status_code, 200)
+
+        dataCheckGet = json.loads(resultGet.data)
+        self.check_standard_reply(dataCheckGet, 200)

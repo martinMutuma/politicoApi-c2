@@ -21,10 +21,10 @@ services:
 
  
 script:
-   - python -m pytest  --cov=app
+   - python -m pytest  --cov=app/v2
   
 
 after_success:
-  - codeclimate -test-reporter
+  - coveralls
 
 

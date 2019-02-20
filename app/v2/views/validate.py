@@ -3,7 +3,6 @@ app/v1/views/validate.py
 """
 
 import re
-from urllib.parse import urlparse
 special_chars = r'[0-9~!@#$%^&*()_-`{};:\'"\|/?.>,<]'
 
 
@@ -66,15 +65,10 @@ class Validate:
         Takes url as the parameter
 
         """
-        try:
-            result = urlparse(Url)
-            if all([result.scheme, result.netloc, result.path]):
-                return cls.make_retun_dict(True)
-            else:
-                return cls.make_retun_dict(False, "Must be a valid Url")
-        except Exception as e:
-            cls.errors.append(e)
+        pattern = r"^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/|www\.)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$"
+        if not re.match(pattern, Url):
             return cls.make_retun_dict(False, "Must be a valid Url")
+        return cls.make_retun_dict(True, "valid url")
 
     @classmethod
     def validate_email(cls, mail):

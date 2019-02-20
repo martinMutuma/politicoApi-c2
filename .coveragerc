@@ -2,9 +2,11 @@
 omit = 
         travis/*
         travis/
+        v1/
         
 [report]    
 omit = 
       travis/*
       travis/
+      v1/
     

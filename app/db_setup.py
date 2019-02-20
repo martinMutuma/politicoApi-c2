@@ -49,7 +49,6 @@ class DbSetup:
         queries = cursor.fetchall()
         for i in queries:
             cursor.execute(i[0])
-            self.commit()
 
         self.commit()
 

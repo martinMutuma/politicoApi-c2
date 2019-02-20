@@ -1,7 +1,6 @@
 ## Political 
 [![Build Status](https://travis-ci.org/martinMutuma/politicoApi-c2.svg?branch=develop)](https://travis-ci.org/martinMutuma/politicoApi-c2)
 [![Maintainability](https://api.codeclimate.com/v1/badges/b9d93f75e153d157012e/maintainability)](https://codeclimate.com/github/martinMutuma/politicoApi-c2/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/b9d93f75e153d157012e/test_coverage)](https://codeclimate.com/github/martinMutuma/politicoApi-c2/test_coverage)
 [![Coverage Status](https://coveralls.io/repos/github/martinMutuma/politicoApi-c2/badge.svg?branch=develop)](https://coveralls.io/github/martinMutuma/politicoApi-c2?branch=develop)
 
 ## Description
@@ -11,14 +10,13 @@ while building trust in the process through transparency.
 Political is impremented  using python data structures
 
 ## Setup and installation
-1. Clone the repo
+ 1. Clone the repo
    ```git
         git clone https://github.com/martinMutuma/politicoApi-c2.git
-
         cd politicoApi-c2
    ```
 
-2. Set up virtualenv
+ 2. Set up virtualenv
 
         
    ```bash
@@ -31,7 +29,7 @@ Political is impremented  using python data structures
         python -m virtualenv venv
    `````
 
-3. Activate virtualenv
+ 3. Activate virtualenv
 
         
    ```bash
@@ -43,14 +41,14 @@ Political is impremented  using python data structures
         #windows
         venv/Scripts/activate
    ```
-4. Install dependencies
+ 4. Install dependencies
 
    ```bash
         #Universal windows and linux
         pip install -r requirements.txt
    ```
 
-5. Setup env variables
+ 5. Setup env variables
    ```bash  
         #linux
         - export FLASK_APP=run.py
@@ -65,11 +63,11 @@ Political is impremented  using python data structures
         - set FLASK_ENV=development
         - set CONNECTION_STRING=dbname='political_test' user='postgres' host='localhost' password='your postgress pass' port='5432'
    ```
-6. Manually Running tests
+ 6. Manually Running tests
       ```
          python -m pytest --cov=app
       ```
-7. Start the server
+ 7. Start the server
       ```
          flask run
       ```
@@ -77,16 +75,7 @@ Political is impremented  using python data structures
 App is available at 
 
 1. [Localhost](http://127.0.0.1:5000/)
-
 2. [Heroku](https://mmmpolitical.herokuapp.com)
-
-Default admin 
-
-```
-     email: admin@mail.com
-     password:password
-```
-
 
 ##Political Endpoints
 
@@ -94,9 +83,9 @@ Default admin
 | -------- | ------------------------------------ | -------------------------------------       |
 | `POST`   | `/api/v1/parties`                    | Create a new party                          |
 | `GET`    | `/api/v1/parties`                    | View all parties                            |
-| `GET`    | `/api/v1/parties/<int:party_id>`      | Get party details by party Id               |
-| `PATCH`  | `/api/v1/parties/<int:party_id>/name` | Update a party  name                        |
-| `DELETE` | `/api/v1/parties/<int:party_id>`      | Delete a party by Id                        |
+| `GET`    | `/api/v1/parties/<int:party_id>`     | Get party details by party Id               |
+| `PATCH`  | `/api/v1/parties/<int:party_id>/name`| Update a party  name                        |
+| `DELETE` | `/api/v1/parties/<int:party_id>`     | Delete a party by Id                        |
 | `GET`    | `/api/v1/offices`                    | View All offices                            |
 | `POST`   | `/api/v1/offices`                    | Post a new office                           |
 | `GET`    | `/api/v1/offices/<int:office_id>`    | Get a specific office                       |
@@ -115,14 +104,16 @@ Default admin
 | `GET`    | `/api/v2/offices/<int:office_id>`         | Get a specific office                       |
 | `POST`   | `/api/v2/auth/signup`                     | Create User                                 |
 | `POST`   | `/api/v2/auth/login`                      | Login to system                             |
+| `GET`    | `/api/v2/auth/admin/<int:user_id>`        | Make user an Admin                          |
 | `POST`   | `/api/v2/offices/<int:office_id>/register`| Register candidate                          |
+| `GET`    | `/api/v2/candidates`                      | Get all candidates                          |
 | `POST`   | `/api/v2/offices/vote`                    | Cast vote                                   |
-| `GET`    | `/api/v2/offices/<int:office_id>/result`  | Get specific office results               |
+| `GET`    | `/api/v2/offices/<int:office_id>/result`  | Get specific office results                 |
 
 ## Project managemnt 
 [Pivotal Tracker](https://www.pivotaltracker.com/n/projects/2241695)
 
 ## Project documentation and endpoint Manual test
 
-### [Api v2 Documentation on Apiary](https://political.docs.apiary.io/)
-### [Api V2 Documentation on Postman](https://documenter.getpostman.com/view/3383651/S11BzhxS)
+ ### [Api v2 Documentation on Apiary](https://political.docs.apiary.io/)
+ ### [Api V2 Documentation on Postman](https://documenter.getpostman.com/view/3383651/S11BzhxS)

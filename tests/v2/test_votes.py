@@ -32,3 +32,10 @@ class TestVotes(BaseTest):
             "/api/v2/votes", "POST", data=vote)
         print(json.loads(result_vote.data))
         self.assertEqual(result_vote.status_code, 201)
+
+    def test_cast_vote_wrong_data(self):
+        vote = {'createdBy': 45454545455454545,
+                'candidate_id': 545454545454545, 'office_id': 54545545454454}
+        result_vote = self.send_auth_request(
+            "/api/v2/votes", "POST", data=vote)
+        self.assertEqual(result_vote.status_code, 400)
