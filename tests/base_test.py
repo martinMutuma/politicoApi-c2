@@ -21,9 +21,6 @@ class BaseTest(unittest.TestCase):
         print(result.__dict__)
         self.assertEqual(result.status_code, 200)
 
-        dataCheck = json.loads(result.data)
-        self.assertTrue('status' in dataCheck)
-
     def test_page_not_found(self):
         result = self.client().get('/page_not_found')
         dataCheck = json.loads(result.data)
