@@ -4,6 +4,7 @@ from app.v2.models.party_model import PartyModel
 from app.v2.models.candidate_model import CandidateModel
 from app.v2.models.office_model import OfficeModel
 from app.v2.models.vote_model import VoteModel
+from app.v2.models.petition_model import PetitionModel
 
 
 class TestModels(BaseTest):
@@ -44,3 +45,9 @@ class TestModels(BaseTest):
         vote.create(1, 3, 4)
         self.assertEqual(vote.office_id, 1)
         self.assertIsInstance(vote, VoteModel)
+
+    def test_petition(self):
+        petition = PetitionModel()
+        petition.create(1, 1, "Body", 'Evidence')
+        self.assertEqual(petition.office_id, 1)
+        self.assertIsInstance(petition, PetitionModel)

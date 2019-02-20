@@ -204,3 +204,20 @@ def make_admin(user_id):
         msg = "User not found"
         res = {"status": 404, 'error': msg}
     return make_response(jsonify(res), res['status'])
+
+
+@require_auth
+def get_users():
+    """Get a list of all Users
+    Returns:
+        [api response] -- [with all users]
+    """
+
+    user_model = UserModel()
+    select_cols = user_model.sub_set_cols
+    user_model.select(select_cols)
+    all_users = user_model.get(False)
+    res = jsonify({"status": 200,
+                   'data': all_users
+                   })
+    return make_response(res, 200)

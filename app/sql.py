@@ -60,7 +60,8 @@ table_create_sql = [
              createdOn TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
              createdBy   INTEGER REFERENCES users(id) ON DELETE NO ACTION,
              office_id  INTEGER REFERENCES offices(id) ON DELETE NO ACTION,
-             body TEXT NOT NULL
+             body TEXT NOT NULL,
+             evidence TEXT NOT NULL
 
              );
     """
