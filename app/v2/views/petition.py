@@ -37,7 +37,6 @@ def create_pettion():
         return make_response(res, 400)
 
     save_data = petition.clean_insert_dict(data, False)
-    print(save_data)
     petition.insert(save_data)
     if petition.id is not None:
         data = petition.sub_set()
