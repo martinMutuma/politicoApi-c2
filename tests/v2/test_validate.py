@@ -22,8 +22,8 @@ class TestValidate(BaseTest):
         validate = Validate.validate_name(name)
         self.assertEqual(validate['status'], True)
 
-    def test_validate_name_less_four_chars(self):
-        name = 'ame'
+    def test_validate_name_less_two_chars(self):
+        name = 'a'
         validate = Validate.validate_name(name)
         self.assertEqual(validate['status'], False)
 

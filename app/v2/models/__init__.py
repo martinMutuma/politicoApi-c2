@@ -49,7 +49,6 @@ class BaseModel(object):
         """Compiles the insert statement
         Arguments: new_data_dict {dicti} -- {fieldname:value, fieldname:value}
         """
-        print(new_data_dict)
         if len(new_data_dict) == 0:
             return False
         columns = ",".join(new_data_dict.keys())
@@ -139,7 +138,7 @@ class BaseModel(object):
                     self.add_result_to_self(result)
             except psycopg2.ProgrammingError as errorx:
                 result = None
-                print(errorx)
+                self.errors.append(errorx)
         elif type(number) == int:
             result = self.cursor.fetchmany(number)
         else:

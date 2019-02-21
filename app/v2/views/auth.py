@@ -27,9 +27,14 @@ def signup():
     validate_mail = Validate.validate_email(data['email'])
     if not validate_mail['status']:
         error_message.append(validate_mail['message'])
+    data['password'] = str(data['password']).strip()
     validate_pass = Validate.validate_length(data['password'], 6)
     if validate_pass['status'] is False:
-        error_message.append(validate_pass['message'])
+        error_message.append('Password ' + validate_pass['message'])
+    data['phonenumber'] = str(data['phonenumber']).strip()
+    validate_phone = Validate.validate_length(data['phonenumber'], 10)
+    if validate_phone['status'] is False:
+        error_message.append('Phonenumber ' + validate_phone['message'])
     user = None
     user = UserModel()
     user.where(dict(email=data['email']))
@@ -49,7 +54,7 @@ def signup():
 
     save_data = user.clean_insert_dict(data,  full=False)
     save_data['password'] = hash_password(data['password'])
-    print(user.insert(save_data))
+    user.insert(save_data)
     returnUserDetails = user.sub_set()
     token = ''
 

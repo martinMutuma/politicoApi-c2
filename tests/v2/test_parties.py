@@ -8,7 +8,7 @@ class TestParties(BaseTest):
     party1 = {
         'name': 'Party A',
         'hqAddress': '22 jumpstreet',
-        'logoUrl': 'www.url.com/party.png',
+        'logoUrl': 'www.url.com/party.pngffgh',
     }
     party1b = {
         'name': 'Party B',
@@ -18,21 +18,21 @@ class TestParties(BaseTest):
     party1c = {
         'name': 'Party c',
         'hqAddress': '23 jumpstreet',
-        'logoUrl': 'www.url.com/party.png',
+        'logoUrl': 'www.url.com/party.png5677g',
     }
     party1d = {
         'name': 'Party D',
         'hqAddress': '23 jumpstreet',
-        'logoUrl': 'www.url.com/party.png',
+        'logoUrl': 'www.url.com/party.png88oo',
     }
     party_short_name = {
-        'name': 'Par',
+        'name': 'P',
         'hqAddress': '21 jumpstreet',
-        'logoUrl': 'www.url.com/party.png',
+        'logoUrl': 'www.url.com/party.png88',
     }
     party_missing_data = {
         'name': 'Par',
-        'logoUrl': 'www.url.com/party.png',
+        'logoUrl': 'www.url.com/party.pnguuu',
     }
 
     def test_create_party(self):
