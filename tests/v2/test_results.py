@@ -8,7 +8,6 @@ class TestResults(BaseTest):
     def test_results(self):
         votes = VoteModel()
         results = votes.get(True)
-        print(results)
         office_id = 0
         if results is not None:
             office_id = results['office_id']

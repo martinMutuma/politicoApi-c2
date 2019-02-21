@@ -43,14 +43,15 @@ class DbSetup:
         """
         Drops all tables from the db
         """
+        self.__init__()
         cursor = self.connection.cursor()
-
         cursor.execute(drop_tables)
         queries = cursor.fetchall()
         for i in queries:
             cursor.execute(i[0])
 
         self.commit()
+        self.__init__()
 
     def commit(self):
         """

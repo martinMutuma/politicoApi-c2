@@ -45,7 +45,7 @@ v2_app.add_url_rule('/auth/login', view_func=auth.login, methods=['POST'])
 v2_app.add_url_rule('/auth/signup', view_func=auth.signup, methods=['POST'])
 v2_app.add_url_rule('/auth/users', view_func=auth.get_users, methods=['GET'])
 v2_app.add_url_rule('/auth/admin/<int:user_id>',
-                    view_func=auth.make_admin, methods=['GET'])
+                    view_func=auth.make_admin, methods=['PATCH'])
 
 # votes votes
 v2_app.add_url_rule('/votes', view_func=votes.vote, methods=['POST'])

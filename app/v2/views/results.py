@@ -13,5 +13,5 @@ def office_results(office_id):
     votes_model.select_query = query
     print(votes_model.select_query)
     result = votes_model.get(False)
-    res = jsonify({'data': result, 'status': 2001})
+    res = jsonify({'data': result, 'status': 200})
     return make_response(res, 200)

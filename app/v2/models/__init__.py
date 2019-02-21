@@ -94,7 +94,7 @@ class BaseModel(object):
                 self.add_result_to_self(result)
         except psycopg2.ProgrammingError as errorx:
             result = None
-            print(errorx)
+            self.errors.append(errorx)
         self.where_clause = ''
         return result
 
@@ -158,7 +158,7 @@ class BaseModel(object):
                 self.add_result_to_self(result)
         except psycopg2.ProgrammingError as errorx:
             result = None
-            print(errorx)
+            self.errors.append(errorx)
         return result
 
     def compile_select(self):
@@ -180,7 +180,6 @@ class BaseModel(object):
         """
         try:
             self.cursor.execute(query)
-         
             if commit is True:
                 self.connection.commit()
             self.where_clause = ''

@@ -53,7 +53,7 @@ class Validate:
     def validate_length(cls, name, lenth=1):
         """Validates lenght of a string"""
 
-        if len(name) <= lenth:
+        if len(name) < lenth:
             msg = "Should be at least {} characters".format(str(lenth))
             return cls.make_retun_dict(False, msg)
         return cls.make_retun_dict(True)
@@ -67,7 +67,7 @@ class Validate:
         """
         pattern = r"^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/|www\.)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$"
         if not re.match(pattern, Url):
-            return cls.make_retun_dict(False, "Must be a valid Url")
+            return cls.make_retun_dict(False, "should be a valid Url")
         return cls.make_retun_dict(True, "valid url")
 
     @classmethod
