@@ -13,7 +13,7 @@ class Views(object):
             data = request.get_json()
         else:
             data = request.form.to_dict()
-        print(data)
+        # print(data)
         if not data:
             try:
                 data = request.get_json(force=True)

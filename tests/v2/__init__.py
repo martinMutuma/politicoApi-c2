@@ -18,6 +18,8 @@ class BaseTest(unittest.TestCase):
         db.create_tables()
         polApp.config.from_object(configs['testing'])
         self.client = polApp.test_client
+        self.token = ''
+        self.login()
 
     def post(self, path, data={}):
         result = self.send_auth_request(path, 'POST', data)
@@ -44,8 +46,7 @@ class BaseTest(unittest.TestCase):
         return self.client().open(Url,
                                   method=method,
                                   headers={
-                                      'Authorization': "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MywiZW1haWwiOiJhZG1pbkBtYWlsLmNvbSIsImZpcnN0bmFtZSI6Ik5hbWUiLCJvdGhlcm5hbWUiOiJPdGhlck5hbWUiLCJsYXN0bmFtZSI6IldlbGxuYW1lIiwicGhvbmVudW1iZXIiOiIwODkzMjkyOTkyIiwicGFzc3BvcnR1cmxzdHJpbmciOiJ3d3cudXJsLmNvbS8xNiIsImlzYWRtaW4iOnRydWV9.Xow6qYFh8yrqQ-gwMEp4DLtpYZVW-KA2oRtugQr79XA",  "Content-Type": "application/json"
-                                  },
+                                      'Authorization': "Bearer " + self.token},
                                   data=json.dumps(data)
                                   )
 
@@ -72,3 +73,14 @@ class BaseTest(unittest.TestCase):
             'hqAddress': '23 jumpstreet',
             'logoUrl': 'www.url.com/ ' + BaseTest().random_name(10),
         }
+
+    def login(self):
+        login_data = {'email': 'admin@mail.com',
+                      'password': 'password'}
+        result2 = self.send_auth_request(
+            '/api/v2/auth/login', 'POST', login_data)
+        data = json.loads(result2.data)
+        if data['data']['token']:
+            self.token = data['data']['token']
+
+    

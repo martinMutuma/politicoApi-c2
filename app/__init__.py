@@ -34,10 +34,8 @@ def create_app(config='development'):
     app.register_blueprint(v2_app, url_prefix='/api/v2')
 
     db = DbSetup(config)
-    flask_env = os.getenv('FLASK_ENV', None)
-    if (flask_env != 'production'):
-        db.drop()
-    db.create_tables()
+    with app.app_context():
+        db.create_tables()
     create_default_admin()
     return app
 
