@@ -260,6 +260,31 @@ paths:
           description: ''
           headers: {}
       deprecated: false
+  /auth/admin/{user_id}:
+    patch:
+      summary: 'Elevate user to admin'
+      operationId: 'userToAdmin'
+      parameters:
+      - name: Content-Type
+        in: header
+        description: ''
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: application/json
+      - in: path
+        name: user_id
+        schema:
+          type: integer
+        required: true
+        description: User id
+      responses:
+        200:
+          description: ''
+          headers: {}
+      deprecated: false    
   /offices/{office_id}/register:
     post:
       summary: 'Create candidate'

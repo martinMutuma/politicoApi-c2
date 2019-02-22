@@ -112,14 +112,14 @@ class Parties(Views):
         if validateName['status'] is False:
             res = jsonify(
                 {'status': 400, 'error': validateName['message'], 'data': []})
-            abort(make_response(res, 400))
+            return abort(make_response(res, 400))
         party = PartyModel()
         party.where(dict(name=name))
         if party.check_exist() is True:
             msg = "Duplicate error, Party {} already exists with id {}".format(
                 name, party.id)
-            res = jsonify({'status': 400, 'error': msg, 'data': []})
-            abort(make_response(res, 400))
+            res = jsonify({'status': 400, 'error': msg})
+            return abort(make_response(res, 400))
 
         if logoUrl is not None:
             party2 = PartyModel()
@@ -128,6 +128,6 @@ class Parties(Views):
             if party2.check_exist() is True:
                 msg = "Party {} already exists with logo {}".format(
                     party2.name, logoUrl)
-                res = jsonify({'status': 400, 'error': msg, 'data': []})
-                abort(make_response(res, 400))
+                res = jsonify({'status': 400, 'error': msg})
+                return abort(make_response(res, 400))
         return True

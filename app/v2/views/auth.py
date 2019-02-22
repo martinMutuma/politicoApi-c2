@@ -144,7 +144,8 @@ def require_auth(func):
                 return func(*args, **kwargs)
             except (jwt.DecodeError):
                 pass
-        abort(make_response(jsonify(
+                        
+        return abort(make_response(jsonify(
             {"status": 400,
                 'error': "You are not authorized to perform that action"}),
             400))
@@ -181,7 +182,7 @@ def require_auth_admin(func):
                     return func(*args, **kwargs)
             except (jwt.DecodeError):
                 pass
-        abort(make_response(jsonify(
+        return abort(make_response(jsonify(
             {"status": 400,
                 'error': "You are not authorized to perform this action"}),
             400))
