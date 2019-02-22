@@ -36,6 +36,7 @@ def create_app(config='development'):
     db = DbSetup(config)
     with app.app_context():
         db.create_tables()
+
     create_default_admin()
     return app
 
