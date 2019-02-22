@@ -29,15 +29,14 @@ class Offices(Views):
 
         if validateName['status'] is False:
             res = jsonify(
-                {'status': 400, 'error': validateName['message'], 'data': []})
+                {'status': 400, 'error': validateName['message']})
             return make_response(res, 400)
 
         if Offices.validate_type(post_data['type']) is not True:
             types = ", ".join(officeTypes)
             msg = "Field type should be one of {}".format(types)
             res = jsonify({'status': 400,
-                           'error': msg,
-                           'data': post_data
+                           'error': msg
                            })
             return make_response(res, 400)
 
@@ -49,7 +48,7 @@ class Offices(Views):
             name = post_data['name']
             id = new_office.id
             msg = "Office {} already exists with id {}".format(name, id)
-            res = jsonify({'status': 400, 'error': msg, 'data': []})
+            res = jsonify({'status': 400, 'error': msg})
             return make_response(res, 400)
         insert_data = new_office.clean_insert_dict(post_data, False)
         new_office.insert(insert_data)
@@ -162,5 +161,5 @@ class Offices(Views):
             msg = "Office {} already exists with id {}".format(
                 name, office_model.id)
             res = jsonify({'status': 400,
-                           'error': "Duplicate error," + msg, 'data': []})
+                           'error': "Duplicate error," + msg})
             abort(make_response(res, 400))

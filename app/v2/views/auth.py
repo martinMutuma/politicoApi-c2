@@ -35,6 +35,9 @@ def signup():
     validate_phone = Validate.validate_length(data['phonenumber'], 10)
     if validate_phone['status'] is False:
         error_message.append('Phonenumber ' + validate_phone['message'])
+    validate_url = Validate.validate_url(data['passporturlstring'])
+    if validate_url['status'] is False:
+        error_message.append('passporturl ' + validate_phone['message'])
     user = None
     user = UserModel()
     user.where(dict(email=data['email']))
@@ -84,8 +87,17 @@ def login():
             res = {'data': {'token': token, 'user': payload
                             },
                    'status': 200}
-            return make_response(jsonify(res), res['status'])
-    res = {'error': "Login error, Please check your datails", 'status': 400}
+        else:
+            res = {
+                'error': "Wrong emai/password combination. Please try again",
+                'status': 400
+            }
+
+        return make_response(jsonify(res), res['status'])
+    res = {
+        'error': "Could not find a account with that email. Pleas sign up",
+        'status': 400
+    }
     return make_response(jsonify(res), res['status'])
 
 
@@ -132,7 +144,8 @@ def require_auth(func):
                 return func(*args, **kwargs)
             except (jwt.DecodeError):
                 pass
-        abort(make_response(jsonify(
+                        
+        return abort(make_response(jsonify(
             {"status": 400,
                 'error': "You are not authorized to perform that action"}),
             400))
@@ -169,17 +182,12 @@ def require_auth_admin(func):
                     return func(*args, **kwargs)
             except (jwt.DecodeError):
                 pass
-        abort(make_response(jsonify(
+        return abort(make_response(jsonify(
             {"status": 400,
                 'error': "You are not authorized to perform this action"}),
             400))
 
     return func_wrapper
-
-
-@require_auth
-def test():
-    return make_response(jsonify({"Mesaage": "This was validated"}), 200)
 
 
 def hash_password(password):
@@ -211,7 +219,7 @@ def make_admin(user_id):
     return make_response(jsonify(res), res['status'])
 
 
-@require_auth
+@require_auth_admin
 def get_users():
     """Get a list of all Users
     Returns:

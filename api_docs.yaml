@@ -241,6 +241,50 @@ paths:
           description: ''
           headers: {}
       deprecated: false
+  /auth/users:
+    get:
+      summary: 'Get all Users'
+      operationId: 'getUsers'
+      parameters:
+      - name: Content-Type
+        in: header
+        description: ''
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: application/json
+      responses:
+        200:
+          description: ''
+          headers: {}
+      deprecated: false
+  /auth/admin/{user_id}:
+    patch:
+      summary: 'Elevate user to admin'
+      operationId: 'userToAdmin'
+      parameters:
+      - name: Content-Type
+        in: header
+        description: ''
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: application/json
+      - in: path
+        name: user_id
+        schema:
+          type: integer
+        required: true
+        description: User id
+      responses:
+        200:
+          description: ''
+          headers: {}
+      deprecated: false    
   /offices/{office_id}/register:
     post:
       summary: 'Create candidate'
@@ -299,6 +343,25 @@ paths:
           description: ''
           headers: {}
       deprecated: false
+  /candidates:
+    get:
+      summary: 'Get all Candidates'
+      operationId: 'getCandidates'
+      parameters:
+      - name: Content-Type
+        in: header
+        description: ''
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: application/json
+      responses:
+        200:
+          description: ''
+          headers: {}
+      deprecated: false
   /votes:
     post:
       summary: 'Vote'
@@ -320,6 +383,33 @@ paths:
             schema:
               $ref: '#/components/schemas/VoteRequest'
             example: '{"createdBy":"1","candidate_id":"1","office_id":"1"}'
+        required: true
+      responses:
+        201:
+          description: ''
+          headers: {}
+      deprecated: false
+  /petitions:
+    post:
+      summary: 'Register a Petition'
+      operationId: 'petition'
+      parameters:
+      - name: Content-Type
+        in: header
+        description: ''
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: application/json
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/petition'
+            
         required: true
       responses:
         201:
@@ -432,6 +522,20 @@ components:
         createdBy: 1
         candidate_id: 1
         office_id: 
+    'petition':
+      title: 'Petitiion'
+      required:
+      - body
+      - evidence
+      type: object
+      properties:
+        body:
+          type: string
+        evidence:
+          type: string
+      example:
+        body: This is a petition challenging the election results ...
+        evidence: url,url,url
   securitySchemes:
     BearerAuth:
       type: http

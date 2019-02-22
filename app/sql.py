@@ -62,7 +62,6 @@ table_create_sql = [
              office_id  INTEGER REFERENCES offices(id) ON DELETE NO ACTION,
              body TEXT NOT NULL,
              evidence TEXT NOT NULL
-
              );
     """
 

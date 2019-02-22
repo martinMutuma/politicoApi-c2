@@ -34,7 +34,9 @@ def create_app(config='development'):
     app.register_blueprint(v2_app, url_prefix='/api/v2')
 
     db = DbSetup(config)
-    db.create_tables()
+    with app.app_context():
+        db.create_tables()
+
     create_default_admin()
     return app
 

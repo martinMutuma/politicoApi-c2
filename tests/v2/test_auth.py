@@ -44,7 +44,7 @@ class TestAuth(BaseTest):
     def test_make_user_admin(self):
         """Test Make user admin"""
 
-        resultGet = self.send_auth_request("/api/v2/auth/admin/5656", 'GET')
+        resultGet = self.send_auth_request("/api/v2/auth/admin/5656", 'PATCH')
         self.assertEqual(resultGet.status_code, 404)
         dataCheckGet = json.loads(resultGet.data)
         self.check_standard_reply(dataCheckGet, 200, True)
