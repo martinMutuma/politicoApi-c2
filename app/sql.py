@@ -63,7 +63,26 @@ table_create_sql = [
              body TEXT NOT NULL,
              evidence TEXT NOT NULL
              );
+    """,
+    """CREATE OR REPLACE VIEW candidate_details AS
+        SELECT s.id As  candidatev_id,s.party_id,
+        s.office_id  as candidate_office_id, o.name AS office_name,
+        o.type AS office_type,
+       CONCAT( u.firstname,' ',u.lastname,' ',u.othername) AS candidate_name,
+        u.passporturlstring AS candidate_passport, u.id AS candidate_user_id
+        FROM candidates s
+        JOIN offices o ON  s.office_id = o.id
+        JOIN users u ON  u.id = s.user_id
+    """,
+    """CREATE OR REPLACE VIEW vote_details as
+        select v.*,d.*,u.passporturlstring as voter_passport,
+        CONCAT( u.firstname,' ',u.lastname,' ',u.othername) AS voter_name
+        from votes v
+        join candidate_details d on d.candidatev_id = v.candidate_id
+        join users u on u.id = v.createdby
     """
+
+
 
 ]
 

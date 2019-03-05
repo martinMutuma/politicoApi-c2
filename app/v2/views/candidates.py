@@ -2,9 +2,12 @@ from flask import make_response, jsonify
 from app.v2.models.candidate_model import CandidateModel
 from app.v2.models.user_model import UserModel
 from app.v2.models.office_model import OfficeModel
+from app.v2.models import BaseModel
 from app.v2.views import Views
 from app.v2.views import auth
 
+candidate_views_model = BaseModel()
+candidate_views_model.create_model('candidate_details', 'candidatev_id')
 
 @auth.require_auth_admin
 def register(office_id):
@@ -50,11 +53,23 @@ def get_all_candidates():
     Returns:
         [api response] -- [with all candidates]
     """
+    candidate_views_model.select()
+    all_candidates = candidate_views_model.get(False)
+    res = jsonify({"status": 200,
+                   'data': all_candidates
+                   })
+    return make_response(res, 200)
 
-    candidate_model = CandidateModel()
-    select_cols = candidate_model.sub_set_cols
-    candidate_model.select(select_cols)
-    all_candidates = candidate_model.get(False)
+
+@auth.require_auth
+def get_candidates_by_office(office_id):
+    """Get a list of all candidates by office id
+    Returns:
+        [api response] -- [with all candidates]
+    """
+    candidate_views_model.where({'candidate_office_id': office_id})
+    candidate_views_model.select()
+    all_candidates = candidate_views_model.get(False)
     res = jsonify({"status": 200,
                    'data': all_candidates
                    })

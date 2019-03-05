@@ -121,6 +121,12 @@ class Offices(Views):
         patch_data = Views.get_data()
 
         cls.check_for_required_fields(fields=['name'], dataDict=patch_data)
+        validateName = Validate.validate_name(patch_data['name'])
+
+        if validateName['status'] is False:
+            res = jsonify(
+                {'status': 400, 'error': validateName['message']})
+            return make_response(res, 400)
         cls.validate_office_name(patch_data['name'])
         office = OfficeModel()
         office_exists = office.get_one(office_id)

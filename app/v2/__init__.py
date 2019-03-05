@@ -36,6 +36,9 @@ v2_app.add_url_rule('/offices/<int:office_id>',
                     view_func=Offices.delete_office, methods=['DELETE'])
 v2_app.add_url_rule('/offices/<int:office_id>/register',
                     view_func=candidates.register, methods=['POST'])
+v2_app.add_url_rule('/offices/<int:office_id>/candidates',
+                    view_func=candidates.get_candidates_by_office,
+                    methods=['GET'])
 # result route
 v2_app.add_url_rule('/offices/<int:office_id>/result',
                     view_func=results.office_results, methods=['get'])

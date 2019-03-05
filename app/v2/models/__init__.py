@@ -31,6 +31,21 @@ class BaseModel(object):
         self.column_names = []
         self.clean_insert_dict()
 
+    def create_model(self, table,primary_key='id' ,sub_set_cols=[]):
+        """Creates a model without having to create a file
+        Arguments:
+            table {[str]} -- [table to create model for]
+        Keyword Arguments:
+            sub_set_cols {list} -- [return colums for sub_set function]
+             (default: {[]})
+        Returns:
+            [object] -- [description]
+        """
+        self.table_name = table
+        self.sub_set_cols = sub_set_cols
+        self.primary_key = primary_key
+        return self
+
     def select(self, fields=[]):
         """Builds the select part of the query
         Keyword Arguments:
