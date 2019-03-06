@@ -13,8 +13,8 @@ class DbSetup:
         Arguments:
             config_name {[string]}
         """
-        connection_string = configs[config_name].CONNECTION_STRING
-        self.connection = psycopg2.connect(connection_string)
+        self.connection_string = configs[config_name].CONNECTION_STRING
+        self.connection = psycopg2.connect(self.connection_string)
         self.cursor = self.connection.cursor(
             cursor_factory=psycopg2.extras.RealDictCursor)
 
@@ -22,6 +22,7 @@ class DbSetup:
         """
         Returns the Database connection
         """
+        self.__init__()
         return self.connection
 
     def get_cursor(self):
@@ -36,21 +37,25 @@ class DbSetup:
         """
         for query in table_create_sql:
             self.cursor.execute(query)
-
         self.commit()
 
     def drop(self):
         """
         Drops all tables from the db
         """
+        self.cursor.execute("select current_database()")
+        db_name = self.cursor.fetchone()['current_database']
+        queryc = """SELECT pg_terminate_backend(pid) FROM pg_stat_activity
+            WHERE pid !=(select pg_backend_pid()) AND datname = '{}';
+        """.format(db_name)
+        self.cursor.execute(queryc)
         self.__init__()
         cursor = self.connection.cursor()
         cursor.execute(drop_tables)
         queries = cursor.fetchall()
         for i in queries:
             cursor.execute(i[0])
-
-        self.commit()
+            self.commit()
         self.__init__()
 
     def commit(self):
@@ -66,3 +71,19 @@ class DbSetup:
         self.connection.commit()
         self.cursor.close()
         self.connection.close()
+
+    def close_connection(self):
+        # self.cursor.close()
+        self.connection.close()
+
+    def refresh(self):
+        """
+        reflesh db connection
+        """
+        self.cursor.execute("select current_database()")
+        db_name = self.cursor.fetchone()['current_database']
+        queryc = """SELECT pg_terminate_backend(pid) FROM pg_stat_activity
+            WHERE pid !=(select pg_backend_pid()) AND datname = '{}';
+        """.format(db_name)
+        self.cursor.execute(queryc)
+        self.__init__()

@@ -9,6 +9,7 @@ from app.v2.views import auth
 candidate_views_model = BaseModel()
 candidate_views_model.create_model('candidate_details', 'candidatev_id')
 
+
 @auth.require_auth_admin
 def register(office_id):
     """Registeres a candidate into the system"""
@@ -45,6 +46,36 @@ def register(office_id):
         return make_response(jsonify(dict(data=data, status=status)), status)
     res = {"error": "Could not create Candidate", 'status': 400}
     return make_response(jsonify(res), 400)
+
+
+@auth.require_auth
+def get_candidate_details(candidate_id):
+    candidate_views_model.where({'candidatev_id': candidate_id})
+    candidate_views_model.select()
+    candidate = candidate_views_model.get()
+    if candidate is not None:
+        res = {"status": 200,
+               'data': candidate
+               }
+    else:
+        res = {"error": "Candidate not found", 'status': 400}
+
+    return make_response(jsonify(res), res['status'])
+
+
+@auth.require_auth
+def get_candidate_by_user_id(user_id):
+    candidate_views_model.where({'candidate_user_id': user_id})
+    candidate_views_model.select()
+    candidate = candidate_views_model.get()
+    if candidate is not None:
+        res = {"status": 200,
+               'data': candidate
+               }
+    else:
+        res = {"error": "Not a candidate", 'status': 400}
+
+    return make_response(jsonify(res), res['status'])
 
 
 @auth.require_auth

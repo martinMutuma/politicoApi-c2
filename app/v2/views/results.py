@@ -9,7 +9,9 @@ def office_results(office_id):
     votes_model = VoteModel()
     query = """SELECT COUNT(*) As result, office_id, candidate_id
                 FROM votes WHERE office_id={}
-                GROUP BY candidate_id,office_id;""" .format(office_id)
+                GROUP BY candidate_id,office_id
+                ORDER BY result
+                ;""" .format(office_id)
     votes_model.select_query = query
     print(votes_model.select_query)
     result = votes_model.get(False)

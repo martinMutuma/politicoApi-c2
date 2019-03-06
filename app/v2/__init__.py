@@ -52,9 +52,19 @@ v2_app.add_url_rule('/auth/admin/<int:user_id>',
 
 # votes votes
 v2_app.add_url_rule('/votes', view_func=votes.vote, methods=['POST'])
+v2_app.add_url_rule('/votes/check/<int:office_id>',
+                    view_func=votes.check_voted, methods=['GET'])
+v2_app.add_url_rule('/votes/myvotes',
+                    view_func=votes.get_user_votes, methods=['GET'])
 # candidates
 v2_app.add_url_rule(
     '/candidates', view_func=candidates.get_all_candidates, methods=['GET'])
+v2_app.add_url_rule(
+    '/candidates/<int:candidate_id>',
+    view_func=candidates.get_candidate_details, methods=['GET'])
+v2_app.add_url_rule(
+    '/candidates/user/<int:user_id>',
+    view_func=candidates.get_candidate_by_user_id, methods=['GET'])
 # candidates
 v2_app.add_url_rule(
     '/petitions', view_func=petition.create_pettion, methods=['POST'])

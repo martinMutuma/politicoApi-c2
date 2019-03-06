@@ -5,17 +5,19 @@ import unittest
 import json
 from app.db_setup import DbSetup
 from run import polApp
+from app import create_app
 
 config = "testing"
-
-db = DbSetup(config)
+# db = DbSetup(config)
 
 
 class BaseTest(unittest.TestCase):
     '''Sets up the initial repeated tasks for all tests'''
 
     def setUp(self):
-        db.create_tables()
+        create_app(config)
+        self.db = DbSetup(config)
+        self.db.create_tables()
         polApp.config.from_object(configs['testing'])
         self.client = polApp.test_client
         self.token = ''
@@ -83,4 +85,5 @@ class BaseTest(unittest.TestCase):
         if data['data']['token']:
             self.token = data['data']['token']
 
-    
+    def tearDown(self):
+        self.db.drop()

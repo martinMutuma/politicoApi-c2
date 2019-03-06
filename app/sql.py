@@ -35,9 +35,9 @@ table_create_sql = [
     """,
     """CREATE TABLE IF NOT EXISTS candidates(
             id SERIAL PRIMARY KEY,
-            party_id INTEGER REFERENCES parties(id) ON DELETE NO ACTION ,
-            office_id INTEGER REFERENCES offices(id) ON DELETE NO ACTION,
-            user_id INTEGER REFERENCES users(id) ON DELETE NO ACTION,
+            party_id INTEGER REFERENCES parties(id) ON DELETE CASCADE ,
+            office_id INTEGER REFERENCES offices(id) ON DELETE CASCADE,
+            user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
             manifesto  TEXT ,
             createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             updatedAt  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -46,11 +46,11 @@ table_create_sql = [
     """,
     """CREATE TABLE IF NOT EXISTS votes(
         id SERIAL PRIMARY KEY,
-        office_id INTEGER REFERENCES offices(id) ON DELETE NO ACTION,
-        candidate_id INTEGER REFERENCES candidates(id) ON DELETE NO ACTION ,
+        office_id INTEGER REFERENCES offices(id) ON DELETE CASCADE,
+        candidate_id INTEGER REFERENCES candidates(id) ON DELETE CASCADE ,
         createdOn  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        createdBy INTEGER REFERENCES users(id) ON DELETE NO ACTION,
+        createdBy INTEGER REFERENCES users(id) ON DELETE CASCADE,
         updatedAt  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         UNIQUE (createdBy, office_id)
         );
@@ -58,11 +58,15 @@ table_create_sql = [
     """CREATE TABLE IF NOT EXISTS petitions(
              id SERIAL PRIMARY KEY,
              createdOn TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-             createdBy   INTEGER REFERENCES users(id) ON DELETE NO ACTION,
-             office_id  INTEGER REFERENCES offices(id) ON DELETE NO ACTION,
+             createdBy   INTEGER REFERENCES users(id) ON DELETE CASCADE,
+             office_id  INTEGER REFERENCES offices(id) ON DELETE CASCADE,
              body TEXT NOT NULL,
              evidence TEXT NOT NULL
              );
+    """,
+    """DROP VIEW  IF EXISTS candidate_details CASCADE
+    """,
+    """DROP VIEW  IF EXISTS vote_details CASCADE
     """,
     """CREATE OR REPLACE VIEW candidate_details AS
         SELECT s.id As  candidatev_id,s.party_id,
@@ -88,11 +92,11 @@ table_create_sql = [
 
 drop_tables = """
             SELECT
-             'drop table if exists "' || tablename || '" cascade;' as pg_drop
+             'DROP TABLE IF EXISTS ' || tablename || ' cascade;' as pg_drop
             FROM
                      pg_tables
             WHERE
                     schemaname='public';
             """
 drop_tables2 = """DROP TABLE
-                users, offices,parties, candidates, votes, petitions """
+                users, offices,parties, candidates, votes, petitions cascade"""

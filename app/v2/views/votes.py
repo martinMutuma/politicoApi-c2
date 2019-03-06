@@ -2,9 +2,13 @@ from flask import make_response, jsonify, request
 from app.v2.models.candidate_model import CandidateModel
 from app.v2.models.user_model import UserModel
 from app.v2.models.vote_model import VoteModel
+from app.v2.models import BaseModel
 from app.v2.models.office_model import OfficeModel
 from app.v2.views import Views
 from app.v2.views import auth
+
+candidate_views_model = BaseModel()
+candidate_views_model.create_model('candidate_details', 'candidatev_id')
 
 
 @auth.require_auth
@@ -47,3 +51,30 @@ def vote():
         return make_response(jsonify(dict(data=data, status=status)), status)
     res = {"error": "Could not create Candidate", 'status': 400}
     return make_response(jsonify(res), 400)
+
+
+@auth.require_auth
+def get_user_votes():
+    data = {}
+    data['createdBy'] = request.user.get('id')
+    vote_view_model = BaseModel()
+    vote_view_model = vote_view_model.create_model('vote_details')
+    vote_view_model.where(data)
+    votes = vote_view_model.get(False)
+    res = {'data': votes, 'status': 200}
+    return make_response(jsonify(res), res['status'])
+
+
+@auth.require_auth
+def check_voted(office_id):
+    where_data = {'office_id': office_id,
+                  'createdBy':  request.user.get('id')}
+    vote = VoteModel()
+    vote.where(where_data)
+    vote.get()
+    if vote.id is not None:
+        res = {"data": {'voted': True, 'vote': vote.sub_set()}, 'status': 200}
+    else:
+        res = {"data": {'voted': False, 'vote': {}}, 'status': 200}
+
+    return make_response(jsonify(res), res['status'])

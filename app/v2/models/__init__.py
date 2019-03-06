@@ -29,9 +29,9 @@ class BaseModel(object):
         self.where_clause = ''
         self.compiled_select = ""
         self.column_names = []
-        self.clean_insert_dict()
+        # self.clean_insert_dict()
 
-    def create_model(self, table,primary_key='id' ,sub_set_cols=[]):
+    def create_model(self, table, primary_key='id', sub_set_cols=[]):
         """Creates a model without having to create a file
         Arguments:
             table {[str]} -- [table to create model for]
@@ -44,6 +44,7 @@ class BaseModel(object):
         self.table_name = table
         self.sub_set_cols = sub_set_cols
         self.primary_key = primary_key
+        self.__init__()
         return self
 
     def select(self, fields=[]):
@@ -139,25 +140,40 @@ class BaseModel(object):
         self.where_clause += clause
         return self
 
+    def get_count(self):
+        self.select_query = 'select count(*) as num_rows from {}'.format(
+            self.table_name)
+        query = self.compile_select()
+        self.execute_query(query)
+        self.where_clause = ''
+        try:
+            count = self.cursor.fetchone()
+            if count is not None:
+                result = count['num_rows']
+        except psycopg2.ProgrammingError as errorx:
+            result = None
+            self.errors.append(errorx)
+        return result
+
     def get(self, single=True,  number="all",):
         """Builds and executes the select querry
         """
         query = self.compile_select()
         self.execute_query(query)
         self.where_clause = ''
-        if single is True:
-            try:
+        try:
+            if single is True:
                 result = self.cursor.fetchone()
                 if result is not None:
                     self.id = result[self.primary_key]
                     self.add_result_to_self(result)
-            except psycopg2.ProgrammingError as errorx:
-                result = None
-                self.errors.append(errorx)
-        elif type(number) == int:
-            result = self.cursor.fetchmany(number)
-        else:
-            result = self.cursor.fetchall()
+            elif type(number) == int:
+                result = self.cursor.fetchmany(number)
+            else:
+                result = self.cursor.fetchall()
+        except psycopg2.ProgrammingError as errorx:
+            result = None
+            self.errors.append(errorx)
         return result
 
     def get_one(self, id):
@@ -193,6 +209,9 @@ class BaseModel(object):
         """To central place to do query execution
         Arguments: query {[str]} -- [compild query]
         """
+        if (self.connection.status != 0):
+            self.connection = db.get_connection()
+            self.cursor = db.get_cursor()
         try:
             self.cursor.execute(query)
             if commit is True:
@@ -201,6 +220,7 @@ class BaseModel(object):
         except psycopg2.Error as errorx:
             self.errors.append(errorx)
             self.errors.append("Error executing `{}`".format(query))
+            print(self.errors)
             self.connection.rollback()
             return False
 
